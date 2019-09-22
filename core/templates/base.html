@@ -1,0 +1,23 @@
+{% load static %}<!-- llamado a las direcciones de los archivos estaticos -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>IKARI EATS - {% block title %}{% endblock %}</title>
+  <link href="{% static "vendor/bootstrap/css/bootstrap.css" %}" rel="stylesheet">
+  <link href="{% static "css/heroic-features.css" %}" rel="stylesheet">
+
+</head>
+
+<body>
+  {% block content %}{% endblock %}
+  <script src="{% static "vendor/jquery/jquery.js" %}"></script>
+</body>
+
+</html>
