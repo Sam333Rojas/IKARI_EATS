@@ -8,8 +8,10 @@
             <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, ipsam, eligendi, in quo sunt
                 possimus non incidunt odit vero aliquid similique quaerat nam nobis illo aspernatur vitae fugiat numquam
                 repellat.</p>
-            <input class="form-control" type="search" id="search" placeholder="Search restaurants or products !">
-            <a href="#" class="btn btn-primary btn-lg">Search!</a>
+            <form action="/search" method="get">
+                <input class="form-control" type="search" id="term" name="term" placeholder="Search restaurants or products !">
+                <button class="btn btn-primary btn-lg">Search!</button>
+            </form>
         </header>
 
         <!-- Page Features -->

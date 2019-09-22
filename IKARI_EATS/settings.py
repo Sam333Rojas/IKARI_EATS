@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'client',
     'dealer',
     'restaurant',
+    'authentication',
 ]
 
 MIDDLEWARE = [
