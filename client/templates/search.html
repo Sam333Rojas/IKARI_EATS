@@ -1,17 +1,22 @@
 {% extends "logged_base.html" %}
 {% block inner-content %}
-    <div class="row">
-        <div class="col-md-7">
-            <a href="#">
-                <img class="img-fluid rounded mb-3 mb-md-0" src="http://placehold.it/700x300" alt="">
-            </a>
+    <h2>Restaurants</h2>
+    {% for restaurant in restaurants %}
+        <div class="row">
+            <div class="col-md-7">
+                <a href="#">
+                    <img class="img-fluid rounded mb-3 mb-md-0" src="http://placehold.it/700x300" alt="">
+                </a>
+            </div>
+            <div class="col-md-5">
+                <h3>{{ restaurant.user.first_name }}</h3>
+                <p>{{ restaurant.description }}</p>
+                <p>{{ restaurant.rank }}.</p>
+                <a href="#" class="btn btn-primary">More</a>
+            </div>
         </div>
-        <div class="col-md-5">
-            <h3>Option</h3>
-            <p>Description.</p>
-            <a href="#" class="btn btn-primary">More</a>
-        </div>
-    </div>
+    {% endfor %}
     <hr>
+    <h2>Items</h2>
 
 {% endblock %}

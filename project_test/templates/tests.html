@@ -1,0 +1,20 @@
+{% extends "logged_base.html" %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block inner-content %}
+    <h1 class="my-4">{{ title }}</h1>
+    <br>
+    <h2>Proceso:</h2>
+    <p>
+        {% for item in log %}
+            <span>{{ item }}</span><br>
+        {% endfor %}
+    </p>
+    <hr>
+    <h3>{{ final_time }}</h3>
+    <div>
+        <h3>{{ elimination }} </h3>
+    </div>
+
+{% endblock %}

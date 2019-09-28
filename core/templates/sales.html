@@ -3,8 +3,9 @@
     <h1 class="my-4">{% block inner-title %}{% endblock %}
         <small>Secondary Text</small>
     </h1>
-    {% block map %}
-    {% endblock %}
+    <div class="container-fluid" style="height: 500px">
+        {% block map %}{% endblock %}
+    </div>
     <table id="sales_table">
         <tr>
             <th>Product name</th>

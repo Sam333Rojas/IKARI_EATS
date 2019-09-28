@@ -2,8 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponseForbidden
 from django.shortcuts import render
-
-from restaurant.models import Restaurant, Item
+from restaurant.models import Restaurant, Item, RestaurantSerializer
 
 
 @login_required
@@ -12,10 +11,17 @@ def search_view(request):
         return HttpResponseForbidden
 
     term = request.GET.get('term')
-
     restaurants = Restaurant.objects.filter(Q(user__first_name__icontains=term) | Q(tag__label__icontains=term))
     items = Item.objects.filter(name__icontains=term)
-    return render(request, 'search.html')
+    restaurants_serializer = RestaurantSerializer(restaurants, many=True)
+    """
+    items_serializer = ItemSerializer(items)
+    """
+    return render(request, 'search.html', {
+        'restaurants': restaurants_serializer.data
+    })
+
+
 
 
 @login_required

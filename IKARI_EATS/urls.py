@@ -17,9 +17,11 @@ from django.contrib import admin
 from django.urls import path
 
 from client.views import search_view, home_view, active_view, c_sales_view, confirmation_view, restaurant_view
-from restaurant.views import items_view
 from core.views import test_template
 from authentication.views import login
+from dealer.views import current, dealer_h
+from project_test.views import linked_list_test
+from restaurant.views import items_view, item_view, active_sales, old_sales
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,10 +32,13 @@ urlpatterns = [
     path('active_purchase/', active_view),
     path('client_sales/', c_sales_view),
     path('confirmation/', confirmation_view),
-    path('items/', items_view),
     path('restaurant/', restaurant_view),
-
-
-
+    path('order/', current),
+    path('dealer_home/', dealer_h),
+    path('items/', items_view),
+    path('item/', item_view),
+    path('active_sales/', active_sales),
+    path('restaurant_sales/', old_sales),
+    path('test/linked_list/<int:n>', linked_list_test),
 
 ]
