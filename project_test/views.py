@@ -68,22 +68,61 @@ class MyLinkedList:
 
 def linked_list_test(request, n):
     results = {
-        'title': 'Prueba con {} usuarios'.format(n)
+        'title': 'Test with {} numbers in a List'.format(n)
     }
-    users = MyLinkedList()
+    python_list = []
+
     initial_time = time()
-
     for i in range(n):
-        users.add_at_end(i)
-
+        python_list.append(i)
     t_final = time()
     t_total = t_final - initial_time
+    results['python_list_insertion'] = t_total
 
-    results['final_time'] = 'Tiempo total al insertar {} datos = {}'.format(n, t_total)
+    initial_time1 = time()
+    for i in range(n):
+        python_list.pop()
+    t_final1 = time()
+    t_total1 = t_final1 - initial_time1
+    results['python_list_delete'] = t_total1
+
+    my_list = MyLinkedList()
 
     initial_time2 = time()
-    users.delete_node(n)
+    for i in range(n):
+        my_list.add_at_end(i)
     t_final2 = time()
-    t_elimination = t_final2 - initial_time2
-    results['elimination'] = 'Tiempo total al eliminar el dato {} = {}'.format(n, t_elimination)
+    t_total2 = t_final2 - initial_time2
+    results['my_list_insertion'] = t_total2
+
+    initial_time3 = time()
+    for i in range(n):
+        my_list.delete_node(i)
+    t_final3 = time()
+    t_total3 = t_final3 - initial_time3
+    results['my_list_delete'] = t_total3
+
     return render(request, 'tests.html', results)
+
+
+def python_list_test(request, n):
+    results = {
+        'title': 'Test with {} numbers in a List'.format(n)
+    }
+    python_list = []
+
+    initial_time = time()
+    for i in range(n):
+        python_list.append(i)
+    t_final = time()
+    t_total = t_final - initial_time
+    results['python_list_insertion'] = t_total
+
+    initial_time1 = time()
+    for i in range(n):
+        python_list.pop()
+    t_final1 = time()
+    t_total1 = t_final1 - initial_time1
+    results['python_list_delete'] = t_total1
+
+    return render(request, 'test_2.html', results)

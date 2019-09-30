@@ -1,4 +1,5 @@
 {% extends "sales.html" %}
+{% load static %}
 {% block title %}
     ACTIVE order
 {% endblock %}
@@ -7,9 +8,15 @@
 
 {% endblock %}
 {% block map %}
-
-
+    <div id="map"></div>
 {% endblock %}
 {% block buttons %}
 
+{% endblock %}
+{% block additional_js %}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqxIL3Ii8OAx3f8FdtDw5UjW3AM6sYDyQ&callback=initMap" async defer></script>
+    <script src="{% static "js/current_order.js" %}"></script>
+{% endblock %}
+{% block additional_css %}
+    <link rel="stylesheet" href="{% static "css/current_order.css" %}">
 {% endblock %}

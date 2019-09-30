@@ -20,7 +20,7 @@ from client.views import search_view, home_view, active_view, c_sales_view, conf
 from core.views import test_template
 from authentication.views import login
 from dealer.views import current, dealer_h
-from project_test.views import linked_list_test
+from project_test.views import linked_list_test, python_list_test
 from restaurant.views import items_view, item_view, active_sales, old_sales
 
 urlpatterns = [
@@ -40,5 +40,5 @@ urlpatterns = [
     path('active_sales/', active_sales),
     path('restaurant_sales/', old_sales),
     path('test/linked_list/<int:n>', linked_list_test),
-
+    path('test/python_list/<int:n>', python_list_test),
 ]
