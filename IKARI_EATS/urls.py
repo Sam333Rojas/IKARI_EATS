@@ -18,7 +18,7 @@ from django.urls import path
 
 from client.views import search_view, home_view, active_view, c_sales_view, confirmation_view, restaurant_view
 from core.views import test_template
-from authentication.views import login
+from authentication.views import login, reg_restaurant, reg_client
 from dealer.views import current, dealer_h
 from project_test.views import linked_list_test, python_list_test
 from restaurant.views import items_view, item_view, active_sales, old_sales
@@ -41,4 +41,7 @@ urlpatterns = [
     path('restaurant_sales/', old_sales),
     path('test/linked_list/<int:n>', linked_list_test),
     path('test/python_list/<int:n>', python_list_test),
+    path('registration/restaurant', reg_restaurant),
+    path('registration/client', reg_client),
+
 ]

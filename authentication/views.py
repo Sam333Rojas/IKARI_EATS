@@ -19,6 +19,14 @@ def login(request):
         else:
             return render(request, 'login.html', {'error': True})
 
+
+def reg_restaurant(request):
+    return render(request, 'reg_restaurant.html')
+
+
+def reg_client(request):
+    return render(request, 'reg_client.html')
+
 @login_required
 def logout(request):
     django_logout(request)
