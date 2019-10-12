@@ -1,15 +1,15 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>IKARI-EATS</title>
+  <title>IKARI-EATS</title>
 </head>
 <!--  <style>
  .jumbotron{
@@ -30,126 +30,127 @@
  </style>
 -->
 <style>
-    body {
-        padding-top: 40px;
-        padding-bottom: 40px;
-        background-color: #eee;
-    }
+  body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #eee;
+  }
 
-    .form-signin {
-        max-width: 330px;
-        padding: 15px;
-        margin: 0 auto;
-    }
+  .form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+  }
 
-    .form-signin .form-signin-heading,
-    .form-signin .checkbox {
-        margin-bottom: 10px;
-    }
+  .form-signin .form-signin-heading,
+  .form-signin .checkbox {
+    margin-bottom: 10px;
+  }
 
-    .form-signin .checkbox {
-        font-weight: normal;
-    }
+  .form-signin .checkbox {
+    font-weight: normal;
+  }
 
-    .form-signin .form-control {
-        position: relative;
-        height: auto;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        padding: 10px;
-        font-size: 16px;
-    }
+  .form-signin .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+  }
 
-    .form-signin .form-control:focus {
-        z-index: 2;
-    }
+  .form-signin .form-control:focus {
+    z-index: 2;
+  }
 
-    .form-signin input[type="email"] {
-        margin-bottom: -1px;
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-    }
+  .form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 
-    .form-signin input[type="password"] {
-        margin-bottom: 10px;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-    }
+  .form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
 
-    .jumbotron {
-        background-color: white;
-    }
+  .jumbotron {
+    background-color: white;
+  }
 
-    }
+  }
 </style>
 
 <body class="text-center">
 {% if error %}
-    <h1>MAL</h1>
+  <h1>MAL</h1>
 {% endif %}
 <div class="page-header">
-    <h1>Ikari-Eats</h1>
+  <h1>Ikari-Eats</h1>
 </div><!-- F.page-header -->
 <div class="jumbotron">
-    <h2>Something</h2>
+  <h2>Something</h2>
 </div><!-- F.jumbotron-->
 <div class="container">
-    <form action="" method="post" class="form-sigin">
-        {% csrf_token %}
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+  <form action="" method="POST" class="form-sigin">
+    {% csrf_token %}
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
 
-        <div class="form-control">
-            <div class="row form-group">
-                <label for="inputEmail" class="sr-only">User name</label>
-                <input name="username" type="text" id="inputEmail" class="form-control" placeholder="User name"
-                       required=""
-                       autofocus="">
-            </div>
-            <div class="row form-group">
-                <label for="inputEmail" class="sr-only">Password</label>
-                <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password"
-                       required="" autofocus="">
-            </div>
-        </div>
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
-    </form><!--F.form-->
-    <button name="submit " class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <div class="form-control">
+      <div class="row form-group">
+        <label for="inputEmail" class="sr-only">User name</label>
+        <input name="username" type="text" id="inputEmail" class="form-control" placeholder="User name"
+               required=""
+               autofocus="">
+      </div>
+      <div class="row form-group">
+        <label for="inputEmail" class="sr-only">Password</label>
+        <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password"
+               required="" autofocus="">
+      </div>
+    </div>
+    <div class="checkbox mb-3">
+      <label>
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>
+    </div>
+    <button name="submit" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     <p class="lead">By proceeding, I agree <b>Ikari-Eats's</b> Terms of Use and acknowledge that I have read the Privacy
-        Policy.</p>
+      Policy.</p>
+  </form><!--F.form-->
+
 </div>
 <div class="jumbotron">
 
-    <h2>Where do you want to eat today?</h2>
+  <h2>Where do you want to eat today?</h2>
 </div><!-- F.jumbotron-->
 
 <div class="container marketing">
 
-    <!-- <div class="row justify-content-md-center"> </div>--F.row justify-contect-md-center-->
-    <div class="row">
-        <div class="col col-lg-4">
-            <img class="rounded-circle"
-                 src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt=""
-                 width="140" height="140">
-            <h3>Mc Donalds</h3>
-        </div>
-        <div class="col col-lg-4">
-            <img class="rounded-circle"
-                 src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt=""
-                 width="140" height="140">
-            <h3>Other</h3>
-        </div>
-        <div class="col col-lg-4">
-            <img class="rounded-circle"
-                 src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt=""
-                 width="140" height="140">
-            <h3>Other</h3>
-        </div>
-    </div><!-- F. row -->
+  <!-- <div class="row justify-content-md-center"> </div>--F.row justify-contect-md-center-->
+  <div class="row">
+    <div class="col col-lg-4">
+      <img class="rounded-circle"
+           src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt=""
+           width="140" height="140">
+      <h3>Mc Donalds</h3>
+    </div>
+    <div class="col col-lg-4">
+      <img class="rounded-circle"
+           src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt=""
+           width="140" height="140">
+      <h3>Other</h3>
+    </div>
+    <div class="col col-lg-4">
+      <img class="rounded-circle"
+           src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt=""
+           width="140" height="140">
+      <h3>Other</h3>
+    </div>
+  </div><!-- F. row -->
 
 </div><!-- F.containe marketing -->
 <!-- Optional JavaScript -->

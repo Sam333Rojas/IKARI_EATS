@@ -1,15 +1,57 @@
 let map;
 
 function initMap() {
-    var directionsService = new google.maps.DirectionsService;
-    var directionsRenderer = new google.maps.DirectionsRenderer;
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 4.7110, lng: -74.0721},
         zoom: 10
     });
-    directionsRenderer.setMap(map);
-    calculateAndDisplayRoute(directionsService, directionsRenderer);
+    calculateAndDisplayRoute({lat: 4.5981, lng: -74.0760}, {lat: 4.6383, lng: -74.0885});
+    navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
+
+    var marker1 = new google.maps.Marker({
+        position: {lat: 4.5981, lng: -75.0760},
+        map: map,
+        title: 'Hello World!'
+    });
+
+    var marker2 = new google.maps.Marker({
+        position: {lat: 4.4521, lng: -74.0760},
+        map: map,
+        title: 'Hello World!'
+    });
+
+    var marker4 = new google.maps.Marker({
+        position: {lat: 4.5981, lng: -77.0760},
+        map: map,
+        title: 'Hello World!'
+    });
+    var service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix(
+        {
+            origins: [{lat: 4.5981, lng: -74.0760}],
+            destinations: [{lat: 4.5981, lng: -75.0760}, {lat: 4.4521, lng: -74.0760}, {lat: 5.5981, lng: -69.0760}],
+            travelMode: 'DRIVING',
+            avoidHighways: false,
+            avoidTolls: false,
+        }, callbackMatrix);
 }
+
+var callbackMatrix = function (response, status) {
+    console.log(response)
+    let min = response.rows[0].elements[0].duration.value,
+        minIndex = 0;
+    for (let i = 1; i < response.rows[0].elements.length; i++) {
+        if (min > response.rows[0].elements[i].duration.value) {
+            min = response.rows[0].elements[i].duration.value;
+            minIndex = i;
+        }
+    }
+    console.log(response.destinationAddresses[minIndex]);
+    calculateAndDisplayRoute({
+        lat: 4.5981,
+        lng: -74.0760
+    }, response.destinationAddresses[minIndex]);
+};
 
 /*
 function calculateLocation(address) {
@@ -22,16 +64,36 @@ function calculateLocation(address) {
 }
 */
 
-function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+let geoSuccess = function (position) {
+    startPos = position;
+    console.log(position)
+    var marker = new google.maps.Marker({
+        position: {lat: position.coords.latitude, lng: position.coords.longitude},
+        map: map,
+        title: 'Hello World!'
+    });
+};
+let geoError = function (error) {
+    switch (error.code) {
+        case error.TIMEOUT:
+            console.log('error');
+            break;
+    }
+}
+
+function callback(response, status) {
+    // See Parsing the Results for
+    // the basics of a callback function.
+}
+
+
+function calculateAndDisplayRoute(pointA, pointB) {
+    var directionsService = new google.maps.DirectionsService;
+    var directionsRenderer = new google.maps.DirectionsRenderer;
+    directionsRenderer.setMap(map);
     directionsService.route({
-            origin: {
-                lat: 4.5981,
-                lng: -74.0760
-            },
-            destination: {
-                lat: 4.6383,
-                lng: -74.0885
-            },
+            origin: pointA,
+            destination: pointB,
             travelMode:
                 'DRIVING'
         },
@@ -43,7 +105,6 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
                 window.alert('Directions request failed due to ' + status);
             }
         }
-    )
-    ;
+    );
 }
 
