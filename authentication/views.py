@@ -27,6 +27,14 @@ def reg_restaurant(request):
 def reg_client(request):
     return render(request, 'reg_client.html')
 
+
+def reg_deliverer(request):
+    return render(request, 'reg_dealer.html')
+
+def reg_item(request):
+    return render(request, 'reg_item.html')
+
+
 @login_required
 def logout(request):
     django_logout(request)
