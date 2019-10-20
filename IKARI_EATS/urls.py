@@ -16,19 +16,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from client.views import search_view, home_view, active_view, c_sales_view, confirmation_view, restaurant_view
-from core.views import test_template
+from client.views import search_view, home_view, active_view, c_sales_view, confirmation_view, restaurant_view, \
+    client_sign_in_view
+from core.views import test_template, redirect_home
 from authentication.views import login, reg_restaurant, reg_client
 from dealer.views import current, dealer_h
 from project_test.views import linked_list_test, python_list_test
 from restaurant.views import items_view, item_view, active_sales, old_sales
 
 urlpatterns = [
+    path('', redirect_home),
     path('admin/', admin.site.urls),
     path('test/', test_template),
-    path('login/', login),
+    path('login/', login, name='login'),
     path('search/', search_view),
-    path('home/', home_view),
+    path('home/', home_view, name='home'),
     path('active_purchase/', active_view),
     path('client_sales/', c_sales_view),
     path('confirmation/', confirmation_view),
@@ -42,6 +44,6 @@ urlpatterns = [
     path('test/linked_list/<int:n>', linked_list_test),
     path('test/python_list/<int:n>', python_list_test),
     path('registration/restaurant', reg_restaurant),
-    path('registration/client', reg_client),
+    path('registration/client', client_sign_in_view),
 
 ]
