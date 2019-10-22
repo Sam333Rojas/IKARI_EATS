@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="page-header">
-        <h1>Ikari-Eats</h1>
-    </div>
+  <div class="page-header">
+    <h1>Ikari-Eats</h1>
+  </div>
 
-    <div class="jumbotron">
-        <h2>Registration Form: {% block tittle %}{% endblock %} </h2>
-    </div>
+  <div class="jumbotron">
+    <h2>Registration Form: {% block tittle %}{% endblock %} </h2>
+  </div>
 
-    <div class="container">
-      <form action="" method="post" class="form-sigin">
+  <div class="container">
+    {% comment %}<form action="" method="post" class="form-sigin">
         {% csrf_token %}
         <h1 class="h3 mb-3 font-weight-normal">something</h1>
           {% block inputs %}
@@ -19,8 +19,12 @@
                 <input type="checkbox" value="remember-me"> I accept terms and conditions
             </label>
         </div>
-    </form><!--F.form-->
-    <button name="submit " class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form><!--F.form-->{% endcomment %}
+    <form action="" method="post">
+      {% csrf_token %}
+      {% block form %}{% endblock %}
+      <button name="submit " class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
     <br>
-    </div>
+  </div>
 {% endblock %}
