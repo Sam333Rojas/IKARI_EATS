@@ -1,9 +1,9 @@
 from django import forms
 from django.contrib.auth.models import User
-from client.models import Client
+from dealer.models import Dealer
 
 
-class ClientForm(forms.ModelForm):
+class DealerForm(forms.ModelForm):
     password = forms.CharField(min_length=8, required=True, widget=forms.PasswordInput)
     repeat_password = forms.CharField(min_length=8, required=True, widget=forms.PasswordInput)
 
@@ -12,7 +12,7 @@ class ClientForm(forms.ModelForm):
         fields = ['first_name', 'email', 'username']
 
     def __init__(self, *args, **kwargs):
-        super(ClientForm, self).__init__(*args, **kwargs)
+        super(DealerForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
@@ -23,6 +23,6 @@ class ClientForm(forms.ModelForm):
             user.first_name = self.cleaned_data['first_name']
             user.save()
 
-            client = Client.objects.create(user_id=user.id)
-            client.save()
-            return client
+            dealer = Dealer.objects.create(user_id=user.id)
+            dealer.save()
+            return dealer

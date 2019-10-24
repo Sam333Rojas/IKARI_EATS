@@ -1,17 +1,39 @@
 {% extends "reg.html" %}
 {% block tittle %}Item{% endblock %}
-{% block inputs %}
-     <br>
-    <input name="Name" type="email" class="form-control" placeholder="description" required="" autofocus="">
-    <br>
-    <input name="Description" type="text" class="form-control" placeholder="latitude" required="" autofocus="">
-    <br>
-    <input name="Price" type="text" class="form-control" placeholder="latitude" required="" autofocus="">
-    <br>
-    <input name="Path" type="text" class="form-control" placeholder="latitude" required="" autofocus="">
-    <br>
-    <input name="tag" type="text" class="form-control" placeholder="latitude" required="" autofocus="">
-    <br>
-    <input name="restaurant" type="text" class="form-control" placeholder="latitude" required="" autofocus="">
-    <br>
+{% block form %}
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        {{ form.first_name.label_tag }}
+        {{ form.first_name }}
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+      </div>
+    </div>
+  </div>
+  {% comment %}.row.form-group>(.col>.form-control)*3{% endcomment %}
+  <div class="row form">
+    <div class="col">
+      <div class="form-group">
+        {{ form.username.label_tag }}
+        {{ form.username }}
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        {{ form.password.label_tag }}
+        {{ form.password }}
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        {{ form.repeat_password.label_tag }}
+        {{ form.repeat_password }}
+      </div>
+    </div>
+  </div>
 {% endblock %}

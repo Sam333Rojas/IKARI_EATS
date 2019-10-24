@@ -31,6 +31,7 @@ def reg_client(request):
 def reg_deliverer(request):
     return render(request, 'reg_dealer.html')
 
+
 def reg_item(request):
     return render(request, 'reg_item.html')
 
