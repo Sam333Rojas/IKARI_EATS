@@ -12,8 +12,8 @@ class Restaurant(models.Model):
     user = models.OneToOneField(User, on_delete=None, primary_key=True)
     rank = models.IntegerField()
     description = models.TextField()
-    latitude = models.IntegerField()
-    longitude = models.IntegerField()
+    latitude = models.DecimalField(decimal_places=8,max_digits=12)
+    longitude = models.DecimalField(decimal_places=8,max_digits=12)
     address = models.CharField(max_length=100)
     tag = models.ForeignKey(Tag, on_delete=None)
 
