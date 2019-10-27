@@ -39,7 +39,6 @@ def restaurant_sign_in_view(request):
             else:
                 return render(request, 'login.html', {'error': True})
         else:
-            #  TODO: Error
-            pass
+            return HttpResponseRedirect('/login/')
     else:
-        return render(request, 'reg_client.html', {'form': restaurant_form})
+        return render(request, 'reg_restaurant.html', {'form': restaurant_form})

@@ -1,38 +1,76 @@
 {% extends "reg.html" %}
 {% block tittle %}Restaurant{% endblock %}
 {% block form %}
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        {{ form.first_name.label_tag }}
-        {{ form.first_name }}
+  <div class="form">
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          {{ form.first_name.label_tag }}
+          {{ form.first_name }}
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          {{ form.email.label_tag }}
+          {{ form.email }}
+        </div>
       </div>
     </div>
-    <div class="col">
-      <div class="form-group">
-        {{ form.email.label_tag }}
-        {{ form.email }}
+    {% comment %}.row.form-group>(.col>.form-control)*3{% endcomment %}
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          {{ form.username.label_tag }}
+          {{ form.username }}
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          {{ form.password.label_tag }}
+          {{ form.password }}
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          {{ form.repeat_password.label_tag }}
+          {{ form.repeat_password }}
+        </div>
       </div>
     </div>
-  </div>
-  {% comment %}.row.form-group>(.col>.form-control)*3{% endcomment %}
-  <div class="row form">
-    <div class="col">
-      <div class="form-group">
-        {{ form.username.label_tag }}
-        {{ form.username }}
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          {{ form.description.label_tag }}
+          {{ form.description }}
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          {{ form.latitude.label_tag }}
+          {{ form.latitude }}
+        </div>
       </div>
     </div>
-    <div class="col">
-      <div class="form-group">
-        {{ form.password.label_tag }}
-        {{ form.password }}
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          {{ form.longitude.label_tag }}
+          {{ form.longitude }}
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          {{ form.address.label_tag }}
+          {{ form.address }}
+        </div>
       </div>
     </div>
-    <div class="col">
-      <div class="form-group">
-        {{ form.repeat_password.label_tag }}
-        {{ form.repeat_password }}
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          {{ form.tag_label.label_tag }}
+          {{ form.tag_label }}
+        </div>
       </div>
     </div>
   </div>
