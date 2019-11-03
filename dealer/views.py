@@ -4,17 +4,18 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 # Create your views here.
+from core.views import prepare_parameters
 from dealer.forms.dealer_form import DealerForm
 
 
 @login_required
 def current(request):
-    return render(request, 'current_order.html')
+    return render(request, 'current_order.html', prepare_parameters(request))
 
 
 @login_required
 def dealer_h(request):
-    return render(request, 'dealer_home.html')
+    return render(request, 'dealer_home.html', prepare_parameters(request))
 
 
 def dealer_sign_in_view(request):
