@@ -14,6 +14,15 @@
 
 {% endblock %}
 {% block additional_js %}
+    <script>
+        {% comment %}
+          var destinations = [
+            {% for x in list %}
+            {lat: {{ x.x }}, lng: {{ x.y }}}
+            {% endfor %}
+          ]
+        {%  endcomment %}
+    </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqxIL3Ii8OAx3f8FdtDw5UjW3AM6sYDyQ&callback=initMap" async defer></script>
     <script src="{% static "js/current_order.js" %}"></script>
 {% endblock %}

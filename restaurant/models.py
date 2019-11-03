@@ -12,8 +12,8 @@ class Restaurant(models.Model):
     user = models.OneToOneField(User, on_delete=None, primary_key=True)
     rank = models.IntegerField()
     description = models.TextField()
-    latitude = models.DecimalField(decimal_places=8,max_digits=12)
-    longitude = models.DecimalField(decimal_places=8,max_digits=12)
+    latitude = models.DecimalField(decimal_places=8, max_digits=12)
+    longitude = models.DecimalField(decimal_places=8, max_digits=12)
     address = models.CharField(max_length=100)
     tag = models.ForeignKey(Tag, on_delete=None)
 
@@ -22,7 +22,6 @@ class Restaurant(models.Model):
 
 
 class UserSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
         fields = ['first_name']
@@ -33,7 +32,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Restaurant
-        fields = ['rank', 'latitude', 'longitude', 'address', 'tag', 'user', 'description']
+        fields = ['user_id', 'rank', 'latitude', 'longitude', 'address', 'tag', 'user', 'description']
 
 
 class Item(models.Model):
@@ -44,6 +43,7 @@ class Item(models.Model):
     name = models.CharField(max_length=12)
     tag = models.ForeignKey(Tag, on_delete=None)
     restaurant = models.ForeignKey(Restaurant, on_delete=None, related_name='items')
+
 
 """
 class ItemSerializer(serializers.Serializer):
