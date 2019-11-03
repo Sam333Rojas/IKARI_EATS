@@ -35,7 +35,7 @@ urlpatterns = [
     path('active_purchase/', active_view),
     path('client_sales/', c_sales_view),
     path('confirmation/', confirmation_view),
-    path('restaurant/', restaurant_view),
+    path('restaurant/<int:restaurant_id>', restaurant_view, name='restaurant'),
     path('order/', current),
     path('dealer_home/', dealer_h),
     path('items/', items_view),

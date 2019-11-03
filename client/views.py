@@ -1,21 +1,16 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django.http import HttpResponseForbidden, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 
 from client.forms.client_form import ClientForm
+from core.views import prepare_parameters
 from restaurant.models import Restaurant, Item, RestaurantSerializer
 
 
 @login_required
 def search_view(request):
-    if request.user.groups.filter(name='client').exists():
-        ## Action if existing
-        pass
-    else:
-        ## Chao
-        pass
     if request.method != 'GET':
         return HttpResponseForbidden
 
@@ -26,34 +21,53 @@ def search_view(request):
     """
     items_serializer = ItemSerializer(items)
     """
-    return render(request, 'search.html', {
+    params = prepare_parameters(request)
+    params.update({
         'restaurants': restaurants_serializer.data
     })
+    return render(request, 'search.html', params)
 
 
 @login_required
 def home_view(request):
-    return render(request, 'home.html')
+    return render(request, 'home.html', prepare_parameters(request))
 
 
 @login_required
 def active_view(request):
-    return render(request, 'active_purchase.html')
+    return render(request, 'active_purchase.html', prepare_parameters(request))
 
 
 @login_required
 def c_sales_view(request):
-    return render(request, 'client_sales.html')
+    return render(request, 'client_sales.html', prepare_parameters(request))
 
 
 @login_required
 def confirmation_view(request):
-    return render(request, 'confirmation.html')
+    return render(request, 'confirmation.html', prepare_parameters(request))
 
 
 @login_required
-def restaurant_view(request):
-    return render(request, 'restaurant.html')
+def restaurant_view(request, restaurant_id):
+    restaurant_parameters = {}
+    try:
+        restaurant = Restaurant.objects.get(pk=restaurant_id)
+        restaurant_parameters = {'restaurant': {
+            'name': restaurant.user.first_name,
+            'description': restaurant.description,
+            'items': [{
+                'id': item.id,
+                'name': item.name,
+                'description': item.description,
+                'price': item.price,
+            } for item in restaurant.items.all()]
+        }}
+    except Restaurant.DoesNotExist:
+        raise Http404()
+    params = prepare_parameters(request)
+    params.update(restaurant_parameters)
+    return render(request, 'restaurant.html', params)
 
 
 def client_sign_in_view(request):

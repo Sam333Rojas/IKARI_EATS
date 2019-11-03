@@ -12,7 +12,7 @@
                 <h3>{{ restaurant.user.first_name }}</h3>
                 <p>{{ restaurant.description }}</p>
                 <p>{{ restaurant.rank }}.</p>
-                <a href="#" class="btn btn-primary">More</a>
+                <a href="{% url "restaurant" restaurant_id=restaurant.user_id %}" class="btn btn-primary">More</a>
             </div>
         </div>
     {% endfor %}

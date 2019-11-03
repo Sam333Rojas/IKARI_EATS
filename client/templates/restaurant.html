@@ -4,20 +4,21 @@
 {% endblock %}
 {% block inner-content %}
     <header class="jumbotron my-4">
-        <h1 class="display-3">RESTAURANT NAME</h1>
+        <h1 class="display-3">{{ restaurant.name }}</h1>
         <p class="lead">Description.</p>
 
         <div class="row text-center">
             <table id="restaurant_table">
-                <tr>
-                    <th>Product name</th>
-                    <th>Description</th>
-                    <th>Price</th>
+              {% for item in restaurant.items%}
+              <tr>
+                    <th>{{ item.name }}</th>
+                    <th>{{ item.description }}</th>
+                    <th>{{ item.price }}</th>
                     <th>Options</th>
                 </tr>
+              {% endfor %}
             </table>
 
         </div>
-        <!-- /.row -->
     </header>
 {% endblock %}
