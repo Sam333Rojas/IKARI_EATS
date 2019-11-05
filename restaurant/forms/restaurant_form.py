@@ -8,8 +8,8 @@ class RestaurantForm(forms.ModelForm):
     repeat_password = forms.CharField(min_length=8, required=True, widget=forms.PasswordInput)
 
     description = forms.CharField(widget=forms.TextInput)
-    latitude = forms.DecimalField(decimal_places=8 ,max_digits=12)
-    longitude = forms.DecimalField(decimal_places=8 ,max_digits=12)
+    latitude = forms.DecimalField(decimal_places=8, max_digits=12)
+    longitude = forms.DecimalField(decimal_places=8, max_digits=12)
     address = forms.CharField(max_length=100)
 
     tag_label = forms.CharField(max_length=12)
@@ -29,7 +29,7 @@ class RestaurantForm(forms.ModelForm):
             user = User.objects.create_user(username=self.cleaned_data['username'], email=self.cleaned_data['email'],
                                             password=self.cleaned_data['password'])
             user.first_name = self.cleaned_data['first_name']
-            user.groups.add( Group.objects.get(name='restaurant') )
+            user.groups.add(Group.objects.get(name='restaurant'))
             user.save()
 
             tag = Tag.objects.filter(label=self.cleaned_data['tag_label']).first()

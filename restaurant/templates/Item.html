@@ -7,9 +7,10 @@
             </a>
         </div>
         <div class="col-md-5">
-            <h3>Name of product</h3>
-            <p>Description.</p>
-            <a href="#" class="btn btn-primary">Buy</a>
+            <h3>{{ item.name }}</h3>
+            <p>{{ item.description }}</p>
+            <p>{{ item.price }}</p>
+            <a href="{% url "current" item_id=item.id %}" class="btn btn-primary">Buy</a>
         </div>
     </div>
     <hr>

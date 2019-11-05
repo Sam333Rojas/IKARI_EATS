@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from client.models import Client
 
 
@@ -21,6 +21,7 @@ class ClientForm(forms.ModelForm):
             user = User.objects.create_user(username=self.cleaned_data['username'], email=self.cleaned_data['email'],
                                             password=self.cleaned_data['password'])
             user.first_name = self.cleaned_data['first_name']
+            user.groups.add(Group.objects.get(name='client'))
             user.save()
 
             client = Client.objects.create(user_id=user.id)

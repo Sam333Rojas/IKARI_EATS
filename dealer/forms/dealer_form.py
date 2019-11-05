@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 from dealer.models import Dealer
 
 
@@ -21,6 +21,7 @@ class DealerForm(forms.ModelForm):
             user = User.objects.create_user(username=self.cleaned_data['username'], email=self.cleaned_data['email'],
                                             password=self.cleaned_data['password'])
             user.first_name = self.cleaned_data['first_name']
+            user.groups.add(Group.objects.get(name='dealer'))
             user.save()
 
             dealer = Dealer.objects.create(user_id=user.id)

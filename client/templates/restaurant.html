@@ -9,12 +9,12 @@
 
         <div class="row text-center">
             <table id="restaurant_table">
-              {% for item in restaurant.items%}
+              {% for item in restaurant.items %}
               <tr>
                     <th>{{ item.name }}</th>
                     <th>{{ item.description }}</th>
                     <th>{{ item.price }}</th>
-                    <th>Options</th>
+                    <a href="{% url "current" item_id=item.id %}" class="btn btn-primary">Buy</a>
                 </tr>
               {% endfor %}
             </table>

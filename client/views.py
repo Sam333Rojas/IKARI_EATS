@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login as django_login, logout as d
 
 from client.forms.client_form import ClientForm
 from core.views import prepare_parameters
-from restaurant.models import Restaurant, Item, RestaurantSerializer
+from restaurant.models import Restaurant, Item, RestaurantSerializer, ItemSerializer
 
 
 @login_required
@@ -16,15 +16,16 @@ def search_view(request):
 
     term = request.GET.get('term')
     restaurants = Restaurant.objects.filter(Q(user__first_name__icontains=term) | Q(tag__label__icontains=term))
-    items = Item.objects.filter(name__icontains=term)
+    items = Item.objects.filter(Q(name__icontains=term) | Q(description__icontains=term) | Q(tag__label__icontains=term))
     restaurants_serializer = RestaurantSerializer(restaurants, many=True)
-    """
-    items_serializer = ItemSerializer(items)
-    """
+    items_serializer = ItemSerializer(items, many=True)
+
     params = prepare_parameters(request)
     params.update({
-        'restaurants': restaurants_serializer.data
+        'restaurants': restaurants_serializer.data,
+        'items': items_serializer.data
     })
+
     return render(request, 'search.html', params)
 
 

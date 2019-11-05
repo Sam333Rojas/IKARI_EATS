@@ -13,7 +13,7 @@ def items_view(request):
 
 
 @login_required
-def item_view(request, id):
+def item_view(request, item_id):
     return render(request, 'item.html', prepare_parameters(request))
 
 
