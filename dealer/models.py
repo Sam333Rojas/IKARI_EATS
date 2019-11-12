@@ -10,3 +10,13 @@ class Dealer(models.Model):
 
     class Meta:
         db_table = 'dealer'
+
+
+"""
+class DealerSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = Dealer
+        fields = []
+"""

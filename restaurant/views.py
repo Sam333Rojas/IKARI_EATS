@@ -1,10 +1,11 @@
 from django.contrib.auth import authenticate, login as django_login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 
 from core.views import prepare_parameters
 from restaurant.forms.restaurant_form import RestaurantForm
+from restaurant.models import Item
 
 
 @login_required
@@ -12,9 +13,23 @@ def items_view(request):
     return render(request, 'items.html', prepare_parameters(request))
 
 
+# modificado
 @login_required
 def item_view(request, item_id):
-    return render(request, 'item.html', prepare_parameters(request))
+    item_parameters = {}
+    try:
+        item = Item.objects.get(pk=item_id)
+        item_parameters = {'item': {
+            'id': item.id,
+            'name': item.name,
+            'description': item.description,
+            'price': item.price,
+        }}
+    except Item.DoesNotExist:
+        raise Http404()
+    params = prepare_parameters(request)
+    params.update(item_parameters)
+    return render(request, 'ritem.html', params)
 
 
 @login_required
@@ -33,7 +48,8 @@ def restaurant_sign_in_view(request):
     if request.method == 'POST':
         if restaurant_form.is_valid():
             restaurant = restaurant_form.save()
-            user = authenticate(request, username=restaurant.user.username, password=restaurant_form.cleaned_data['password'])
+            user = authenticate(request, username=restaurant.user.username,
+                                password=restaurant_form.cleaned_data['password'])
             if user is not None:
                 django_login(request, user)
                 return HttpResponseRedirect('/home/')

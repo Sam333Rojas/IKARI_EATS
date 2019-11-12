@@ -1,16 +1,39 @@
 from django.contrib.auth import authenticate ,login as django_login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 
 # Create your views here.
 from core.views import prepare_parameters
 from dealer.forms.dealer_form import DealerForm
+from restaurant.models import Item
 
 
 @login_required
-def current(request):
-    return render(request, 'current_order.html', prepare_parameters(request))
+def current(request,item_id):
+    item_parameters = {}
+    try:
+        item = Item.objects.get(pk=item_id)
+        item_parameters = {'item': {
+            'id': item.id,
+            'name': item.name,
+            'description': item.description,
+            'price': item.price,
+            'restaurant_lat': item.restaurant.latitude,
+            'restaurant_log': item.restaurant.longitude,
+        }}
+    except Item.DoesNotExist:
+        raise Http404()
+    params = prepare_parameters(request)
+    params.update(item_parameters)
+    """
+    dealers = Dealers.objects.filter()
+    dealers_serializer = DealerSerializer(restaurants, many=True)
+    params.update({
+        'dealers': dealers_serializer.data,
+    })
+    """
+    return render(request, 'current_order.html', params)
 
 
 @login_required

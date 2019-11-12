@@ -5,7 +5,6 @@
 {% endblock %}
 {% block inner-title %}
    Current order!
-
 {% endblock %}
 {% block map %}
     <div id="map"></div>
@@ -17,10 +16,11 @@
     <script>
         {% comment %}
           var destinations = [
-            {% for x in list %}
-            {lat: {{ x.x }}, lng: {{ x.y }}}
+            {% for dealer in dealers %}
+            {lat: {{ dealer.lat }}, lng: {{ dealer.log }}}
             {% endfor %}
           ]
+          var restaurant_position = {lat: {{ item.restaurant_lat }}, lng: {{ item.restaurant_log }}}
         {%  endcomment %}
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqxIL3Ii8OAx3f8FdtDw5UjW3AM6sYDyQ&callback=initMap" async defer></script>
