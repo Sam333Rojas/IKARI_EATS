@@ -1,19 +1,31 @@
+//Dealer
+/*
+calcula la ruta entre el y el restaurante
+envia el tiempo correspondiente
+si es aceptaddo traza la ruta entre el y el restaurante
+si es aceptado cambia su estatus y lo envia por post
+ */
+
 let map;
-//let user_lat;let user_log;
+//let dealer_lat;let dealer_log;
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        //lo centramos en el user siendo
-        // center: {lat: user_lat, lng: user_long},
+        //lo centramos en el dealer siendo
+        // center: {lat: dealer_lat, lng: dealer_long},
         center: {lat: 4.7110, lng: -74.0721},
         zoom: 10
     });
-    //comente lo siguiente porque no parece ser util
-    //calculateAndDisplayRoute({lat: 4.5981, lng: -74.0760}, {lat: 4.6383, lng: -74.0885});
-    //¿crea un marcador en la posicion del susuario?
     navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
-
     //en lugar de marker1 , marker2 , marker 4 usamos destinations en current_order.html
-
+    /*
+    for(var i=0;i< destinations.length; i++) {
+    var marker = new google.maps.Marker({
+        position: destinations.get(i),
+        map: map,
+        title: 'Hello World!'
+    });
+    }
+     */
     var marker1 = new google.maps.Marker({
         position: {lat: 4.5981, lng: -75.0760},
         map: map,
@@ -31,10 +43,11 @@ function initMap() {
         map: map,
         title: 'Hello World!'
     });
+    //lo siguiente se comentaria dado que los dealers hacen los calculos de tiempo
     var service = new google.maps.DistanceMatrixService();
     service.getDistanceMatrix(
         {
-            // origins: [{lat: user_lat, lng: user_long}],
+            // origins: [{lat: rest_lat, lng: rest_long}],
             origins: [{lat: 4.5981, lng: -74.0760}],
             //destinations: destinations,
             destinations: [{lat: 4.5981, lng: -75.0760}, {lat: 4.4521, lng: -74.0760}, {lat: 5.5981, lng: -69.0760}],
@@ -44,12 +57,19 @@ function initMap() {
             avoidTolls: false,
         }, callbackMatrix);
 }
-//¿Como revibe los destinations?
+//en lugar de esto seria una funcion que ordene los dealers que van llegando
 var callbackMatrix = function (response, status) {
     console.log(response)
     let min = response.rows[0].elements[0].duration.value,
         minIndex = 0;
     //usar minheap
+    /*
+    var heap = new Heap([2, 8, 5]);
+    heap.push(6)
+    heap.pop();
+     8
+    heap.peek();
+     */
     for (let i = 1; i < response.rows[0].elements.length; i++) {
         if (min > response.rows[0].elements[i].duration.value) {
             min = response.rows[0].elements[i].duration.value;
@@ -65,7 +85,8 @@ var callbackMatrix = function (response, status) {
     }, response.destinationAddresses[minIndex]);
 };
 
-//¿muestra la posicion actual del usuario?
+//muestra la posicion actual del dealer
+//falta enviar esa posicion a la orden
 let geoSuccess = function (position) {
     startPos = position;
     console.log(position)
@@ -84,23 +105,6 @@ let geoError = function (error) {
     }
 }
 
-//revisar
-/*
-function calculateLocation(address) {
-    var geocoder = new google.maps.Geocoder();
-    return geocoder.geocode({
-        "address": address
-    }, function (results) {
-        return results[0].geometry.location;
-    });
-}
-*/
-
-//sobra?
-function callback(response, status) {
-    // See Parsing the Results for
-    // the basics of a callback function.
-}
 
 
 function calculateAndDisplayRoute(pointA, pointB) {
