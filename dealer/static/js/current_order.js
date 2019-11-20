@@ -2,8 +2,8 @@
 /*
 calcula la ruta entre el y el restaurante
 envia el tiempo correspondiente
-si es aceptaddo traza la ruta entre el y el restaurante
-si es aceptado cambia su estatus y lo envia por post
+si es aceptado traza la ruta entre el y el restaurante
+si es aceptado cambia su status y lo envia por post
  */
 
 let map;
@@ -114,7 +114,7 @@ function calculateAndDisplayRoute(pointA, pointB) {
     directionsService.route({
             origin: pointA,
             destination: pointB,
-        //travelMode:
+            // travelMode:
             // 'BIKING'
             travelMode:
                 'DRIVING'

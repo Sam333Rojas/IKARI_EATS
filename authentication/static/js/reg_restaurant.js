@@ -9,7 +9,7 @@ geocoder.geocode( { 'address': address}, function(results, status) {
   } 
 });
 
- */
+*/
 /*
 function calculateLocation(address) {
     var geocoder = new google.maps.Geocoder();

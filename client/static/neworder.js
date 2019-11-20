@@ -5,19 +5,20 @@ genera la orden con los datos del cliente y del restaurante
 recibe la orden con datos del dealer
 muestra los puntos y recorrido
 muestra tiempo total de recorrido
- */
+*/
+
 let map;
 //let client_lat; let client_log;
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        //lo centramos en el dealer siendo
+        // lo centramos en el dealer siendo
         // center: {lat: client_lat, lng: client_long},
         center: {lat: 4.7110, lng: -74.0721},
         zoom: 10
     });
     navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
-    //en lugar de marker1 , marker2 , marker 4 usamos destinations en current_order.html
-    /*
+    // en lugar de marker1 , marker2 , marker 4 usamos destinations en current_order.html
+/*
     for(var i=0;i< destinations.length; i++) {
     var marker = new google.maps.Marker({
         position: destinations.get(i),
@@ -25,7 +26,7 @@ function initMap() {
         title: 'Hello World!'
     });
     }
-     */
+*/
     var marker1 = new google.maps.Marker({
         position: {lat: 4.5981, lng: -75.0760},
         map: map,
@@ -52,7 +53,7 @@ function calculateAndDisplayRoute(pointA, pointB) {
     directionsService.route({
             origin: pointA,
             destination: pointB,
-        //travelMode:
+            // travelMode:
             // 'BIKING'
             travelMode:
                 'DRIVING'
@@ -72,7 +73,7 @@ function calculateAndDisplayRoute(pointA, pointB) {
 //falta enviar esa posicion a la orden
 let geoSuccess = function (position) {
     startPos = position;
-    console.log(position)
+    // console.log(position);
     // user_lat = position.coords.latitude ;user_lat = position.coords.longitude ;
     var marker = new google.maps.Marker({
         position: {lat: position.coords.latitude, lng: position.coords.longitude},
@@ -86,5 +87,4 @@ let geoError = function (error) {
             console.log('error');
             break;
     }
-}
-
+};
