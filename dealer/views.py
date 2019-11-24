@@ -4,9 +4,23 @@ from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 
 # Create your views here.
+from client.models import Order
 from core.views import prepare_parameters
 from dealer.forms.dealer_form import DealerForm
+from dealer.models import Dealer
 from restaurant.models import Item
+
+"""
+@login_required
+def dealer_home(request):
+    orders = Order.objects.all()
+    orders_serializer = OrderSerializer(orders, many=True)
+    params = prepare_parameters(request)
+    params.update({
+        'orders': orders_serializer.data,
+    })
+    return render(request, 'restaurant.html', params)
+"""
 
 
 @login_required

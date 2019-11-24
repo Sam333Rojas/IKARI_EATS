@@ -1,5 +1,6 @@
 //Restaurant
 /*
+se convierte direccion en lat log y se sube a la bd
 se conecta con active_sales.html
 recibe los candidatos a dealer
 los ordena en un min heap tama;o 20 durante 5 minutos

@@ -7,8 +7,16 @@
         <h1 class="display-3">{{ restaurant.name }}</h1>
         <p class="lead">Description.</p>
      </header>
-
         <div class="row text-center">
+            {% comment %}
+            mandar a geocoder.js el address del restaurante si aun no exite la lat y log del mismo
+            esto esta ligado a client/views.py
+             {% if restaurant.lat is none and restaurant.log is none %}
+            <script>
+            var address = restaurant.address;
+            </script>
+            {% endif %}
+            {% endcomment %}
             {% for item in restaurant.items %}
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="card h-100">

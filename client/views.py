@@ -57,6 +57,11 @@ def restaurant_view(request, restaurant_id):
         restaurant_parameters = {'restaurant': {
             'name': restaurant.user.first_name,
             'description': restaurant.description,
+            """
+            'lat': restaurant.latitude,
+            'log': restaurant.longitude,
+            'address': restaurant.address,
+            """
             'items': [{
                 'id': item.id,
                 'name': item.name,

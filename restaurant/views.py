@@ -59,3 +59,5 @@ def restaurant_sign_in_view(request):
             return HttpResponseRedirect('/login/')
     else:
         return render(request, 'reg_restaurant.html', {'form': restaurant_form})
+
+
