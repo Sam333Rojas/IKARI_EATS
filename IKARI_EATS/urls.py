@@ -17,8 +17,8 @@ from django.contrib import admin
 from django.urls import path
 
 
-from client.views import search_view, home_view, active_view, c_sales_view, confirmation_view, restaurant_view, client_sign_in_view
-from core.views import test_template, redirect_home, logout_view
+from client.views import search_view, active_view, c_sales_view, confirmation_view, restaurant_view, client_sign_in_view
+from core.views import test_template, redirect_home, logout_view, home_view
 from authentication.views import login, reg_restaurant
 from dealer.views import current, dealer_h, dealer_sign_in_view
 from project_test.views import linked_list_test, python_list_test

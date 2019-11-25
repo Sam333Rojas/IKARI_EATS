@@ -4,10 +4,23 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth import logout
 
+#from client.views import client_home_view
+from dealer.views import dealer_home_view
+from restaurant.views import restaurant_home_view
+
 
 def test_template(request):
     return render(request, 'base.html')
 
+
+def home_view(request):
+    parameters = prepare_parameters(request)
+    if parameters['user_group'] == 'client':
+        return client_home_view(request,parameters)
+    elif parameters['user_group'] == 'restaurant':
+        return restaurant_home_view(request,parameters)
+    elif parameters['user_group'] == 'dealer':
+        return dealer_home_view(request,parameters)
 
 def redirect_home(request):
     return HttpResponseRedirect(reverse('home'))

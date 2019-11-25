@@ -29,9 +29,8 @@ def search_view(request):
     return render(request, 'search.html', params)
 
 
-@login_required
-def home_view(request):
-    return render(request, 'home.html', prepare_parameters(request))
+def client_home_view(request,params):
+    return render(request, 'home.html', params)
 
 
 @login_required

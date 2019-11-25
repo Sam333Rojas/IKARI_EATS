@@ -11,9 +11,9 @@
             {% comment %}
             mandar a geocoder.js el address del restaurante si aun no exite la lat y log del mismo
             esto esta ligado a client/views.py
-             {% if restaurant.lat is none and restaurant.log is none %}
+             {% if restaurant.lat is none or restaurant.log is none %}
             <script>
-            var address = restaurant.address;
+            var address = {{ restaurant.address }};
             </script>
             {% endif %}
             {% endcomment %}
@@ -33,4 +33,8 @@
             {% endfor %}
         </div>
 
+{% endblock %}
+
+{% block additional_js %}
+  <script src="geocoder.js"></script>
 {% endblock %}
