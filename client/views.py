@@ -29,7 +29,7 @@ def search_view(request):
     return render(request, 'search.html', params)
 
 
-def client_home_view(request,params):
+def client_home_view(request, params):
     return render(request, 'home.html', params)
 
 
@@ -56,11 +56,9 @@ def restaurant_view(request, restaurant_id):
         restaurant_parameters = {'restaurant': {
             'name': restaurant.user.first_name,
             'description': restaurant.description,
-            """
             'lat': restaurant.latitude,
             'log': restaurant.longitude,
             'address': restaurant.address,
-            """
             'items': [{
                 'id': item.id,
                 'name': item.name,

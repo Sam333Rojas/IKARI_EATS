@@ -11,7 +11,7 @@ from restaurant.models import Item
 
 
 @login_required
-def dealer_home_view(request,parameters):
+def dealer_home_view(request, parameters):
     orders = Order.objects.filter(status=1)
     orders_serializer = OrderSerializer(orders, many=True)
     params = parameters
