@@ -8,8 +8,8 @@ class RestaurantForm(forms.ModelForm):
     repeat_password = forms.CharField(min_length=8, required=True, widget=forms.PasswordInput)
 
     description = forms.CharField(widget=forms.TextInput)
-    latitude = forms.DecimalField(decimal_places=8, max_digits=12)
-    longitude = forms.DecimalField(decimal_places=8, max_digits=12)
+    latitude = forms.DecimalField(decimal_places=8, max_digits=12, required=False)
+    longitude = forms.DecimalField(decimal_places=8, max_digits=12, required=False)
     address = forms.CharField(max_length=100)
 
     tag_label = forms.CharField(max_length=12)
