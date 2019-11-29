@@ -1,12 +1,13 @@
+import json
+
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth import logout
 
-#from client.views import client_home_view
-from dealer.views import dealer_home_view
-from restaurant.views import restaurant_home_view
+from client.models import Order
+from restaurant.models import Restaurant, RestaurantSerializer
 
 
 def test_template(request):
@@ -14,13 +15,30 @@ def test_template(request):
 
 
 def home_view(request):
-    parameters = prepare_parameters(request)
-    if parameters['user_group'] == 'client':
-        return client_home_view(request,parameters)
-    elif parameters['user_group'] == 'restaurant':
-        return restaurant_home_view(request,parameters)
-    elif parameters['user_group'] == 'dealer':
-        return dealer_home_view(request,parameters)
+    params = {'user_group': request.user.groups.first().name}
+    if params['user_group'] == 'client':
+        return render(request, 'home.html', params)
+    elif params['user_group'] == 'restaurant':
+        if request.method == 'GET':
+            params.update({
+                'restaurant': RestaurantSerializer(Restaurant.objects.get(pk=request.user.id)).data
+            })
+            return render(request, 'rest_home.html', params)
+        elif request.method == 'POST':
+            restaurant = Restaurant.objects.get(pk=request.user.id)
+            restaurant.latitude = request.POST.get('lat')
+            restaurant.longitude = request.POST.get('log')
+            restaurant.save()
+            return HttpResponse(200)
+    elif params['user_group'] == 'dealer':
+        orders = Order.objects.filter(status=1)
+        orders_serializer = OrderSerializer(orders, many=True)
+        params = parameters
+        params.update({
+            'orders': orders_serializer.data,
+        })
+        return render(request, 'rest_home.html', params)
+
 
 def redirect_home(request):
     return HttpResponseRedirect(reverse('home'))
