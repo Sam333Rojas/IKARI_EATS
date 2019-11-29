@@ -10,7 +10,7 @@ from restaurant.models import Item
 
 @login_required
 def restaurant_home_view(request,params):
-    return render(request, 'rest_home.html',params)
+    return render(request, 'rest_home.html', params)
 
 
 @login_required
