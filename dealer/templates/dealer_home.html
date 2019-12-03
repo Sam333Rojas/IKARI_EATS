@@ -6,7 +6,7 @@
     My sales
 {% endblock %}
 {% comment %}
-aqui se reciben las solicitudes de los restaurantes
+aqui se reciben las orders de los restaurantes
 
 {% for order in orders %}
             <div class="col-lg-3 col-md-6 mb-4">
@@ -26,3 +26,14 @@ aqui se reciben las solicitudes de los restaurantes
             {% endfor %}
 
 {% endcomment %}
+
+{% block additional_js %}
+    {% csrf_token %}
+    <script type="text/javascript">
+        // using jQuery
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqxIL3Ii8OAx3f8FdtDw5UjW3AM6sYDyQ" async
+            defer></script>
+    <script src="{% static "js/dealer_gps.js" %}"></script>
+{% endblock %}

@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 
 from client.forms.client_form import ClientForm
+from client.models import Order
 from core.views import prepare_parameters
 from restaurant.models import Restaurant, Item, RestaurantSerializer, ItemSerializer
 
@@ -33,9 +34,17 @@ def client_home_view(request, params):
     return render(request, 'home.html', params)
 
 
+"""
 @login_required
-def active_view(request):
+def active_view(request,item_id):
+   # crear order 
+    client = request.user
+    item = Item.objects.get(pk=item_id)
+    restaurant = Restaurant.objects.get(pk=restaurant_id)
+    order = Order.objects.create(client=user, restaurant=item.restaurant)
+    order.save()
     return render(request, 'active_purchase.html', prepare_parameters(request))
+"""
 
 
 @login_required

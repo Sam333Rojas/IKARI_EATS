@@ -15,12 +15,11 @@
 {% block additional_js %}
     <script>
         {% comment %}
-          var destinations = [
-            {% for dealer in dealers %}
-            {lat: {{ dealer.lat }}, lng: {{ dealer.log }}}
-            {% endfor %}
-          ]
-          var restaurant_position = {lat: {{ item.restaurant_lat }}, lng: {{ item.restaurant_log }}}
+          con la order calcular tiempo entre la posicion del dealer y la del restaurante
+          mandar posicion del dealer actual por POST
+          mandar time por POST a la solicitude
+          si es aceptado mandar  al dealer a la order
+
         {%  endcomment %}
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqxIL3Ii8OAx3f8FdtDw5UjW3AM6sYDyQ&callback=initMap" async defer></script>

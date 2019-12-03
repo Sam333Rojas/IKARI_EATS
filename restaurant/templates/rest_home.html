@@ -1,25 +1,25 @@
 {% extends "logged_base.html" %}
 {% load static %}
 {% block title %}
-  Restaurant
+    Restaurant
 {% endblock %}
 {% block inner-content %}
-  <header class="jumbotron my-4">
-    <h1 class="display-3">{{ restaurant.name }}</h1>
-    <p class="lead">Description.</p>
-  </header>
-  <div class="row text-center">
-    {% comment %}
+    <header class="jumbotron my-4">
+        <h1 class="display-3">{{ restaurant.name }}</h1>
+        <p class="lead">Description.</p>
+    </header>
+    <div class="row text-center">
+        {% comment %}
             mandar a geocoder.js el address del restaurante si aun no exite la lat y log del mismo
             esto esta ligado a client/views.py
-            {% endcomment %}
-    {% if restaurant.lat is none or restaurant.log is none %}
-      <script>
-          var address = '{{ restaurant.address }}';
-      </script>
-    {% endif %}
-    {% comment %}
-            {% for item in restaurant.items %}
+         {% endcomment %}
+        {% if restaurant.lat is none or restaurant.log is none %}
+            <script>
+                var address = '{{ restaurant.address }}';
+            </script>
+        {% endif %}
+
+        {% for item in restaurant.items %}
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="card h-100">
                     <img class="card-img-top" src="http://placehold.it/500x325" alt="">
@@ -28,23 +28,23 @@
                         <p class="card-text">{{ item.description }}</p>
                     </div>
                     <div class="card-footer">
-                        <a href="{% url "item" item_id=item.id %}" class="btn btn-primary">{{ item.price }}</a>
+                        <a href="#" class="btn btn-primary">Edit</a>
                     </div>
                 </div>
             </div>
-            {% endfor %}
-            {% endcomment %}
-  </div>
+        {% endfor %}
+
+    </div>
 
 {% endblock %}
 
 {% block additional_js %}
-  {% csrf_token %}
-  <script type="text/javascript">
-      // using jQuery
-      var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-  </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqxIL3Ii8OAx3f8FdtDw5UjW3AM6sYDyQ" async
-          defer></script>
-  <script src="{% static "geocoder.js" %}"></script>
+    {% csrf_token %}
+    <script type="text/javascript">
+        // using jQuery
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqxIL3Ii8OAx3f8FdtDw5UjW3AM6sYDyQ" async
+            defer></script>
+    <script src="{% static "js/geocoder.js" %}"></script>
 {% endblock %}

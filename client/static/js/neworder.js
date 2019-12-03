@@ -68,7 +68,7 @@ function calculateAndDisplayRoute(pointA, pointB) {
     );
 }
 
-//muestra la posicion actual del dealer
+//muestra la posicion actual del cliente
 //falta enviar esa posicion a la orden
 let geoSuccess = function (position) {
     startPos = position;

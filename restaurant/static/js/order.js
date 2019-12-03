@@ -1,8 +1,7 @@
 //Restaurant
 /*
-se convierte direccion en lat log y se sube a la bd
 se conecta con active_sales.html
-recibe los candidatos a dealer
+recibe los candidatos a dealer por medio de la solicitud
 los ordena en un min heap tama;o 20 durante 5 minutos
 si no hay candidatos aumenta el tiempo maximo y reenvia la solicitud
 para aumentar el tiempo se propone la funcion (3x/(x+5)) que tiende a 3 siendo el numero de horas,inicialmente vale 0,5

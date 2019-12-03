@@ -2,17 +2,16 @@ from django.db import models
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from dealer.models import Dealer
-from restaurant.models import Restaurant, Item
+from dealer.models import Dealer, DealerSerializer
+from restaurant.models import Restaurant, Item, RestaurantSerializer, ItemSerializer, UserSerializer
 
 
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=None, primary_key=True)
     # agregar campo de lat y log?
-    """
     latitude = models.DecimalField(decimal_places=120, max_digits=128)
     longitude = models.DecimalField(decimal_places=120, max_digits=128)
-    """
+
     '''to format the object'''
     def __str__(self):
         return '{} <{}>'.format(self.user.first_name, self.user.id)
@@ -21,14 +20,12 @@ class Client(models.Model):
         db_table = 'client'
 
 
-"""
 class ClientSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     
     class Meta:
         model = Client
         fields = ['user_id', 'latitude', 'longitude', 'user']
-"""
 
 
 class Order(models.Model):
@@ -39,7 +36,6 @@ class Order(models.Model):
     item = models.ForeignKey(Item, on_delete=None)
 
 
-"""
 class OrderSerializer(serializers.ModelSerializer):
     client = ClientSerializer()
     restaurant = RestaurantSerializer()
@@ -49,4 +45,3 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ('id', 'client', 'dealer', 'restaurant','item')
-"""

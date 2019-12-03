@@ -8,6 +8,7 @@ function csrfSafeMethod(method) {
 $(function () {
     var geocoder = new google.maps.Geocoder();
     var geocoder_OK = google.maps.GeocoderStatus.OK;
+
     if (address) {
         var res_lat;
         var res_log;

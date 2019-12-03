@@ -1,13 +1,14 @@
 from django.contrib.auth import authenticate ,login as django_login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
-from client.models import Order
+from client.models import Order, ClientSerializer, OrderSerializer
+from core.views import prepare_parameters
 from dealer.forms.dealer_form import DealerForm
-from dealer.models import Dealer
-from restaurant.models import Item
+from dealer.models import Dealer, DealerSerializer
+from restaurant.models import Item, RestaurantSerializer
 
 
 @login_required
@@ -18,9 +19,43 @@ def dealer_home_view(request, parameters):
     params.update({
         'orders': orders_serializer.data,
     })
-    return render(request, 'rest_home.html', params)
+    # posicion dealer , hacer que se repita cada cierto tiempo mientras este en la  pagina
+    """
+    if request.method == 'POST':
+        dealer = Dealer.objects.get(pk=request.user.id)
+        dealer.latitude = request.POST.get('lat')
+        dealer.longitude = request.POST.get('log')
+        dealer.save()
+        return HttpResponse(200)
+    """
+    return render(request, 'dealer_home.html', params)
 
 
+"""
+@login_required
+def current(request,order_id):
+    order_parameters = {}
+    try:
+        order = Order.objects.get(pk=order_id)
+        restaurant_serializer = RestaurantSerializer(order.restaurant, many=False)
+        client_serializer = ClientSerializer(order.client, many=False)
+        dealer_serializer = DealerSerializer(order.dealer, many=False)
+        order_parameters = {'item': {
+            'id': order.id,
+            'restaurant': restaurant_serializer.data,
+            'client': client_serializer.data,
+            'dealer': dealer_serializer.data,
+        }}
+        #dealer crea una solicitud
+        sol = Solicitude.objects.create(dealer=order.dealer, order=order)
+        sol.save()
+    except Order.DoesNotExist:
+        raise Http404()
+    params = prepare_parameters(request)
+    params.update(order_parameters)
+    
+    return render(request, 'current_order.html', params)
+"""
 
 
 @login_required
