@@ -2,7 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from rest_framework import serializers
 
-from client.models import Order, OrderSerializer
 from restaurant.models import UserSerializer
 
 
@@ -27,19 +26,14 @@ class DealerSerializer(serializers.ModelSerializer):
         fields = ['user_id', 'latitude', 'longitude', 'user','status']
 
 
-"""
 class Solicitude(models.Model):
     id = models.AutoField(primary_key=True)
-    order = models.ForeignKey(Order, on_delete=None)
+    order = models.ForeignKey('client.Order', on_delete=None)
     dealer = models.ForeignKey(Dealer, on_delete=None)
     time = models.DecimalField(decimal_places=120, max_digits=128)
 
 
 class SolicitudeSerializer(serializers.ModelSerializer):
-    order = OrderSerializer()
-    dealer = DealerSerializer()
-
     class Meta:
         model = Solicitude
-        fields = ('id', 'order', 'dealer','time')
-"""
+        fields = ('id', 'order_id', 'dealer_id','time')

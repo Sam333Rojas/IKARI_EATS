@@ -14,6 +14,7 @@ def test_template(request):
     return render(request, 'base.html')
 
 
+@login_required
 def home_view(request):
     params = {'user_group': request.user.groups.first().name}
     if params['user_group'] == 'client':
@@ -51,5 +52,5 @@ def logout_view(request):
 
 
 @login_required
-def prepare_parameters(request):
-    return {'user_group': request.user.groups.first().name}
+def prepare_parameters(req):
+    return {'user_group': req.user.groups.first().name}

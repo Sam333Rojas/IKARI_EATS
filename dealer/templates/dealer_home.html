@@ -30,7 +30,6 @@ aqui se reciben las orders de los restaurantes
 {% block additional_js %}
     {% csrf_token %}
     <script type="text/javascript">
-        // using jQuery
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqxIL3Ii8OAx3f8FdtDw5UjW3AM6sYDyQ" async

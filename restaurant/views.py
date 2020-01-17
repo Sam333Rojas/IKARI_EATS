@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 
-from client.models import Order
+from client.models import Order, OrderSerializer
 from core.views import prepare_parameters
 from dealer.models import SolicitudeSerializer, Solicitude
 from restaurant.forms.restaurant_form import RestaurantForm
@@ -61,22 +61,32 @@ def item_view(request, item_id):
     params.update(item_parameters)
     return render(request, 'ritem.html', params)
 
-"""
+
 @login_required
 def active_sales(request):
     
     # revisa todas las solicitude en donde la order involucre al restaurant ?
-    sol = Solicitude.objects.filter(order.restaurant=request.user)
+
+    sol = Solicitude.objects.raw("""
+SELECT *
+  FROM dealer_solicitude
+ WHERE order_id IN (
+                   SELECT id
+                     FROM client_order
+                    WHERE restaurant_id={}
+                   );
+    """.format(request.user.id))
     solicitude_serializer = SolicitudeSerializer(sol, many=True)
     # que el dealer no sea nulo en las orders
     orders = Order.objects.filter(restaurant=request.user)
+    orders_serializer = OrderSerializer(orders, many=True)
     params = prepare_parameters(request)
     params.update({
         'solicitudes': solicitude_serializer.data,
         'orders': orders_serializer.data,
     })
     return render(request, 'active_sales.html', params)
-"""
+
 
 @login_required
 def old_sales(request):

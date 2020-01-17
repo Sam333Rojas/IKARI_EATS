@@ -20,14 +20,13 @@ def dealer_home_view(request, parameters):
         'orders': orders_serializer.data,
     })
     # posicion dealer , hacer que se repita cada cierto tiempo mientras este en la  pagina
-    """
+
     if request.method == 'POST':
         dealer = Dealer.objects.get(pk=request.user.id)
         dealer.latitude = request.POST.get('lat')
         dealer.longitude = request.POST.get('log')
         dealer.save()
         return HttpResponse(200)
-    """
     return render(request, 'dealer_home.html', params)
 
 

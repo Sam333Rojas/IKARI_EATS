@@ -1,5 +1,5 @@
 //calcular posicion actual del dealer y enviarla por post
-/*
+
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
@@ -13,7 +13,18 @@ $(function () {
         console.log(position);
         dealer_lat = position.coords.latitude;
         dealer_lat = position.coords.longitude;
-
+        $.post({
+            data: {'lat': dealer_lat, 'log': dealer_log},
+            url: '',
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            },
+            success: function () {
+                console.log('bien!');
+            }
+        });
     };
     let geoError = function (error) {
         switch (error.code) {
@@ -21,20 +32,7 @@ $(function () {
                 console.log('error');
                 break;
         }
-    }
-    navigator.geolocation.getCurrentPosition(geoSuccess, geoError), function (results);
+    };
+    navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
     console.log(dealer_lat, dealer_log);
-    $.post({
-        data: {'lat': dealer_lat, 'log': dealer_log},
-        url: '',
-        beforeSend: function (xhr, settings) {
-            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        },
-        success: function () {
-            console.log('bien!');
-        }
-    });
 });
-*/
