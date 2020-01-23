@@ -7,9 +7,9 @@ from restaurant.models import UserSerializer
 
 class Dealer(models.Model):
     user = models.OneToOneField(User, on_delete=None, primary_key=True)
-    latitude = models.DecimalField(decimal_places=120, max_digits=128)
-    longitude = models.DecimalField(decimal_places=120, max_digits=128)
-    status = models.IntegerField()
+    latitude = models.DecimalField(decimal_places=120, max_digits=128, null=True, blank=True)
+    longitude = models.DecimalField(decimal_places=120, max_digits=128, null=True, blank=True)
+    status = models.IntegerField(default=0)
 
     def __str__(self):
         return '{} <{}>'.format(self.user.first_name, self.user.id)

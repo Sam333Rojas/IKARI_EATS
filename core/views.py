@@ -1,12 +1,12 @@
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth import logout
 
-from client.models import Order
+from client.models import Order, OrderSerializer
 from restaurant.models import Restaurant, RestaurantSerializer
 
 
@@ -21,9 +21,29 @@ def home_view(request):
         return render(request, 'home.html', params)
     elif params['user_group'] == 'restaurant':
         if request.method == 'GET':
-            params.update({
-                'restaurant': RestaurantSerializer(Restaurant.objects.get(pk=request.user.id)).data
-            })
+            restaurant_id = request.user.id
+            restaurant_params = {}
+
+            try:
+                restaurant = Restaurant.objects.get(pk=restaurant_id)
+                restaurant_params = {'restaurant': {
+                    'name': restaurant.user.first_name,
+                    'description': restaurant.description,
+                    'lat': restaurant.latitude,
+                    'log': restaurant.longitude,
+                    'address': restaurant.address,
+                    'items': [{
+                        'id': item.id,
+                        'name': item.name,
+                        'description': item.description,
+                        'price': item.price,
+                    } for item in restaurant.items.all()]
+                }}
+            except Restaurant.DoesNotExist:
+                raise Http404()
+
+            params = prepare_parameters(request)
+            params.update(restaurant_params)
             return render(request, 'rest_home.html', params)
         elif request.method == 'POST':
             restaurant = Restaurant.objects.get(pk=request.user.id)
@@ -34,7 +54,6 @@ def home_view(request):
     elif params['user_group'] == 'dealer':
         orders = Order.objects.filter(status=1)
         orders_serializer = OrderSerializer(orders, many=True)
-        params = parameters
         params.update({
             'orders': orders_serializer.data,
         })

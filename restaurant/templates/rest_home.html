@@ -3,11 +3,13 @@
 {% block title %}
     Restaurant
 {% endblock %}
-{% block inner-content %}
+{% block inner-content %}r
     <header class="jumbotron my-4">
         <h1 class="display-3">{{ restaurant.name }}</h1>
         <p class="lead">Description.</p>
+        <p>{{ restaurant.description }}</p>
     </header>
+    <div class="row"></div>
     <div class="row text-center">
         {% comment %}
             mandar a geocoder.js el address del restaurante si aun no exite la lat y log del mismo
@@ -16,6 +18,7 @@
         {% if restaurant.lat is none or restaurant.log is none %}
             <script>
                 var address = '{{ restaurant.address }}';
+
             </script>
         {% endif %}
 
@@ -39,12 +42,12 @@
 {% endblock %}
 
 {% block additional_js %}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqxIL3Ii8OAx3f8FdtDw5UjW3AM6sYDyQ" async
+            defer></script>
     {% csrf_token %}
     <script type="text/javascript">
         // using jQuery
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqxIL3Ii8OAx3f8FdtDw5UjW3AM6sYDyQ" async
-            defer></script>
     <script src="{% static "js/geocoder.js" %}"></script>
 {% endblock %}

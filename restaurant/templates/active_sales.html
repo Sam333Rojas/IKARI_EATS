@@ -1,6 +1,6 @@
 {% extends "logged_base.html" %}
 {% block inner-content %}
-     {% comment %}
+    {% comment %}
      #ordenes activas
      {% for order in orders %}
     <div class="row">
@@ -37,4 +37,34 @@
     {% endcomment %}
 
 
+{% endblock %}
+
+{% block additional_js %}
+    <script src="{% static "js/min_heap.js" %}"></script>
+    {% comment %}
+    # aqui se reciben los candidatos a dealer
+    var orders = []
+    {% for solicitude in solicitudes %}
+        if (orders[{{ solicitude.order.id }}]) {
+            orders[{{ solicitude.order.id }}].push(solicitude)
+        } else {
+            orders[{{ solicitude.order.id }}] = [solicitude]
+        }
+
+        for (order in orders) {
+            queue = PriorityQueue('time', PriorityQueue.MIN_HEAP);
+            for solicitude in order {
+                queue.insert(solicitude);
+            }
+            winner = queue.getHighestPriorityElement();
+        }
+
+       #agrupar por order_id
+       {% for  in  %}
+        <script>
+        //mandar al min heap
+        </script>
+       {% endfor %}
+    {% endfor %}
+    {% endcomment %}
 {% endblock %}

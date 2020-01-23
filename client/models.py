@@ -8,9 +8,8 @@ from restaurant.models import Restaurant, Item, RestaurantSerializer, ItemSerial
 
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=None, primary_key=True)
-    # agregar campo de lat y log?
-    latitude = models.DecimalField(decimal_places=120, max_digits=128)
-    longitude = models.DecimalField(decimal_places=120, max_digits=128)
+    latitude = models.DecimalField(decimal_places=120, max_digits=128, null=True, blank=True)
+    longitude = models.DecimalField(decimal_places=120, max_digits=128, null=True, blank=True)
 
     '''to format the object'''
     def __str__(self):
@@ -34,6 +33,7 @@ class Order(models.Model):
     client = models.ForeignKey(Client, on_delete=None)
     dealer = models.ForeignKey(Dealer, on_delete=None)
     item = models.ForeignKey(Item, on_delete=None)
+    status = models.IntegerField(default=1)
 
 
 class OrderSerializer(serializers.ModelSerializer):
