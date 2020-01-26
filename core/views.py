@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.contrib.auth import logout
 
 from client.models import Order, OrderSerializer
+from dealer.models import Dealer
 from restaurant.models import Restaurant, RestaurantSerializer
 
 
@@ -22,8 +23,6 @@ def home_view(request):
     elif params['user_group'] == 'restaurant':
         if request.method == 'GET':
             restaurant_id = request.user.id
-            restaurant_params = {}
-
             try:
                 restaurant = Restaurant.objects.get(pk=restaurant_id)
                 restaurant_params = {'restaurant': {
@@ -52,12 +51,29 @@ def home_view(request):
             restaurant.save()
             return HttpResponse(200)
     elif params['user_group'] == 'dealer':
-        orders = Order.objects.filter(status=1)
-        orders_serializer = OrderSerializer(orders, many=True)
-        params.update({
-            'orders': orders_serializer.data,
-        })
-        return render(request, 'rest_home.html', params)
+        if request.method == 'GET':
+            dealer_id = request.user.id
+            try:
+                dealer = Restaurant.objects.get(pk=dealer_id)
+                dealer_params = {'dealer': {
+                    'name': dealer.user.first_name,
+                    'status': dealer.status,
+                    'lat': dealer.latitude,
+                    'log': dealer.longitude,
+                }}
+            except Dealer.DoesNotExist:
+                raise Http404()
+            params = prepare_parameters(request)
+            params.update(dealer_params)
+            orders = Order.objects.all()
+            orders_serializer = OrderSerializer(orders, many=True)
+            order_params = {
+                'orders': orders_serializer.data,
+            }
+            params.update(order_params)
+            return render(request, 'dealer_home.html', params)
+        else:
+            pass
 
 
 def redirect_home(request):
