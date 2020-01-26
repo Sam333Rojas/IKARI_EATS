@@ -33,27 +33,39 @@ def dealer_home_view(request, parameters):
 """
 @login_required
 def current(request,order_id):
-    order_parameters = {}
-    try:
-        order = Order.objects.get(pk=order_id)
-        restaurant_serializer = RestaurantSerializer(order.restaurant, many=False)
-        client_serializer = ClientSerializer(order.client, many=False)
-        dealer_serializer = DealerSerializer(order.dealer, many=False)
-        order_parameters = {'item': {
-            'id': order.id,
-            'restaurant': restaurant_serializer.data,
-            'client': client_serializer.data,
-            'dealer': dealer_serializer.data,
-        }}
-        #dealer crea una solicitud
-        sol = Solicitude.objects.create(dealer=order.dealer, order=order)
-        sol.save()
-    except Order.DoesNotExist:
-        raise Http404()
-    params = prepare_parameters(request)
-    params.update(order_parameters)
-    
-    return render(request, 'current_order.html', params)
+    if request.method == 'GET':
+        order_parameters = {}
+        try:
+            order = Order.objects.get(pk=order_id)
+            restaurant_serializer = RestaurantSerializer(order.restaurant, many=False)
+            client_serializer = ClientSerializer(order.client, many=False)
+            order_parameters = {
+                'id': order.id,
+                'restaurant': restaurant_serializer.data,
+                'client': client_serializer.data,
+            }
+            dealer = Dealer.objects.get(pk= request.user.id)
+            dealer_serializer = DealerSerializer(request.user, many = False)
+            dealer_parameters ={
+                'dealer': dealer_serializer.data, 
+            }
+            #dealer crea una solicitud
+            sol = Solicitude.objects.create(dealer=request.user, order=order )
+            sol.save()
+        except Order.DoesNotExist:
+            raise Http404()
+        params = prepare_parameters(request)
+        params.update(order_parameters)
+        params.update(dealer_parameters)
+        return render(request, 'current_order.html', params)
+    else:
+        solicitude= Solicitude.objects.get(dealer=request.user.id)
+        solicitude.time = request.POST.get('time')
+        solicitude.save()
+        return HttpResponse(200)
+        
+
+
 """
 
 

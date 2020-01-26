@@ -8,7 +8,7 @@ function csrfSafeMethod(method) {
 $(function () {
     var dealer_lat;
     var dealer_log;
-    let geoSuccess = function (position) {
+    var geoSuccess = function (position) {
         startPos = position;
         console.log(position);
         dealer_lat = position.coords.latitude;
@@ -26,7 +26,7 @@ $(function () {
             }
         });
     };
-    let geoError = function (error) {
+    var geoError = function (error) {
         switch (error.code) {
             case error.TIMEOUT:
                 console.log('error');

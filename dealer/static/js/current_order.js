@@ -6,26 +6,29 @@ si es aceptaddo traza la ruta entre el y el restaurante
 si es aceptado cambia su estatus y lo envia por post
  */
 
-let map;
-//let dealer_lat;let dealer_log;
+var map;
+var time;
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         //lo centramos en el dealer siendo
-        // center: {lat: dealer_lat, lng: dealer_long},
+        // center: {lat: dealer_lat, lng: dealer_log},
         center: {lat: 4.7110, lng: -74.0721},
         zoom: 10
     });
     navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
-    //en lugar de marker1 , marker2 , marker 4 usamos destinations en current_order.html
+    //
     /*
-    for(var i=0;i< destinations.length; i++) {
-    var marker = new google.maps.Marker({
-        position: destinations.get(i),
+    var restaurant_marker = new google.maps.Marker({
+        position: {lat: res_lat, lng: res_log},
         map: map,
         title: 'Hello World!'
     });
-    }
-     */
+    var dealer_marker = new google.maps.Marker({
+        position: {lat: dealer_lat, lng: -dealer_log},
+        map: map,
+        title: 'Hello World!'
+    });
+    */
     var marker1 = new google.maps.Marker({
         position: {lat: 4.5981, lng: -75.0760},
         map: map,
@@ -47,9 +50,9 @@ function initMap() {
     var service = new google.maps.DistanceMatrixService();
     service.getDistanceMatrix(
         {
-            // origins: [{lat: rest_lat, lng: rest_long}],
+            // origins: [{lat: dealer_lat, lng: dealer_log}],
             origins: [{lat: 4.5981, lng: -74.0760}],
-            //destinations: destinations,
+            //destinations: [{lat: res_lat, lng: res_log}],
             destinations: [{lat: 4.5981, lng: -75.0760}, {lat: 4.4521, lng: -74.0760}, {lat: 5.5981, lng: -69.0760}],
             //travelMode: 'BIKING',
             travelMode: 'DRIVING',
@@ -57,26 +60,21 @@ function initMap() {
             avoidTolls: false,
         }, callbackMatrix);
 }
-//en lugar de esto seria una funcion que ordene los dealers que van llegando
 var callbackMatrix = function (response, status) {
     console.log(response)
-    let min = response.rows[0].elements[0].duration.value,
+    var min = response.rows[0].elements[0].duration.value,
         minIndex = 0;
-    //usar minheap
-    /*
-    var heap = new Heap([2, 8, 5]);
-    heap.push(6)
-    heap.pop();
-     8
-    heap.peek();
-     */
-    for (let i = 1; i < response.rows[0].elements.length; i++) {
+
+    for (var i = 1; i < response.rows[0].elements.length; i++) {
         if (min > response.rows[0].elements[i].duration.value) {
             min = response.rows[0].elements[i].duration.value;
             minIndex = i;
         }
     }
     console.log(response.destinationAddresses[minIndex]);
+    //guardamos el tiempo en la variable time para enviarlo a BD
+    //time = response.rows[0].elements[minIndex].duration.value;
+    //no es necesario trazar ruta en el proceso
     calculateAndDisplayRoute({
         //lat: user_lat,
         // lng: user_long
@@ -85,28 +83,32 @@ var callbackMatrix = function (response, status) {
     }, response.destinationAddresses[minIndex]);
 };
 
-//muestra la posicion actual del dealer
-//falta enviar esa posicion a la orden
-let geoSuccess = function (position) {
-    startPos = position;
-    console.log(position)
-    // user_lat = position.coords.latitude ;user_lat = position.coords.longitude ;
-    var marker = new google.maps.Marker({
-        position: {lat: position.coords.latitude, lng: position.coords.longitude},
-        map: map,
-        title: 'Hello World!'
-    });
-};
-let geoError = function (error) {
-    switch (error.code) {
-        case error.TIMEOUT:
-            console.log('error');
-            break;
-    }
+//ENVIAR TIEMPO A BD SOLICITUDE
+/*
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
+$(function () {
+    console.log(time);
+    $.post({
+        data: {'time': time},
+        url: '',
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        },
+        success: function () {
+            console.log('bien!');
+        }
+    });
 
 
+});
+//
+ */
 function calculateAndDisplayRoute(pointA, pointB) {
     var directionsService = new google.maps.DirectionsService;
     var directionsRenderer = new google.maps.DirectionsRenderer;
@@ -114,7 +116,7 @@ function calculateAndDisplayRoute(pointA, pointB) {
     directionsService.route({
             origin: pointA,
             destination: pointB,
-        //travelMode:
+            //travelMode:
             // 'BIKING'
             travelMode:
                 'DRIVING'

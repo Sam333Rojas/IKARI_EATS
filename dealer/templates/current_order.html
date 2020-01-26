@@ -4,7 +4,7 @@
     ACTIVE order
 {% endblock %}
 {% block inner-title %}
-   Current order!
+    Current order!
 {% endblock %}
 {% block map %}
     <div id="map"></div>
@@ -15,14 +15,26 @@
 {% block additional_js %}
     <script>
         {% comment %}
-          con la order calcular tiempo entre la posicion del dealer y la del restaurante
-          mandar posicion del dealer actual por POST
-          mandar time por POST a la solicitude
-          si es aceptado mandar  al dealer a la order
+    // variables para que el dealer calcule su tiempo en llegar al restaurante
+    <script>
+        var res_lat= {{ order.restaurant.latitude }}
+        var res_log= {{ order.restaurant.longitude }}
 
+        let dealer_lat ={{ dealer.latitude }};
+        let dealer_log ={{ dealer.longuitude }};
+    </script>
         {%  endcomment %}
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqxIL3Ii8OAx3f8FdtDw5UjW3AM6sYDyQ&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqxIL3Ii8OAx3f8FdtDw5UjW3AM6sYDyQ&callback=initMap"
+            async defer></script>
+    {% comment %}
+    token para el envio por POST ?
+    {% csrf_token %}
+    <script type="text/javascript">
+        // using jQuery
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    </script>
+    {% endcomment %}
     <script src="{% static "js/current_order.js" %}"></script>
 {% endblock %}
 {% block additional_css %}
