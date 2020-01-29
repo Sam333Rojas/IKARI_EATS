@@ -4,12 +4,12 @@ function PriorityQueue(criteria, heapType) {
     this.queue = [];
     this.isMax = !!heapType;
     if ( heapType !== 0 || heapType !== 1 ){
-        throw heapType + " not supported.";
+        throw heapType + " no es soportada.";
     }
 }
 PriorityQueue.prototype.insert = function (value) {
     if (!value.hasOwnProperty(this.criteria)) {
-        throw "Cannot insert " + value + " because it does not have a property by the name of " + this.criteria + ".";
+        throw "No se puede insertar " + value + " Porque este no tiene el campo '" + this.criteria + "'.";
     }
     this.queue.push(value);
     this.length++;
