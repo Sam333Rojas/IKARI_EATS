@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate ,login as django_login
+from django.contrib.auth import authenticate, login as django_login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render
@@ -7,7 +7,7 @@ from django.shortcuts import render
 from client.models import Order, ClientSerializer, OrderSerializer
 from core.views import prepare_parameters
 from dealer.forms.dealer_form import DealerForm
-from dealer.models import Dealer, DealerSerializer
+from dealer.models import Dealer, DealerSerializer, Solicitude
 from restaurant.models import Item, RestaurantSerializer
 
 
@@ -30,27 +30,27 @@ def dealer_home_view(request, parameters):
     return render(request, 'dealer_home.html', params)
 
 
-"""
 @login_required
-def current(request,order_id):
+def current(request, order_id):
     if request.method == 'GET':
-        order_parameters = {}
         try:
             order = Order.objects.get(pk=order_id)
             restaurant_serializer = RestaurantSerializer(order.restaurant, many=False)
             client_serializer = ClientSerializer(order.client, many=False)
             order_parameters = {
-                'id': order.id,
-                'restaurant': restaurant_serializer.data,
-                'client': client_serializer.data,
+                'order': {
+                    'id': order.id,
+                    'restaurant': restaurant_serializer.data,
+                    'client': client_serializer.data
+                }
             }
-            dealer = Dealer.objects.get(pk= request.user.id)
-            dealer_serializer = DealerSerializer(request.user, many = False)
-            dealer_parameters ={
+            dealer = Dealer.objects.get(pk=request.user.id)
+            dealer_serializer = DealerSerializer(dealer, many=False)
+            dealer_parameters = {
                 'dealer': dealer_serializer.data, 
             }
-            #dealer crea una solicitud
-            sol = Solicitude.objects.create(dealer=request.user, order=order )
+            # dealer crea una solicitud
+            sol = Solicitude.objects.create(dealer=dealer, order=order)
             sol.save()
         except Order.DoesNotExist:
             raise Http404()
@@ -59,19 +59,14 @@ def current(request,order_id):
         params.update(dealer_parameters)
         return render(request, 'current_order.html', params)
     else:
-        solicitude= Solicitude.objects.get(dealer=request.user.id)
+        solicitude = Solicitude.objects.get(dealer__user=request.user)
         solicitude.time = request.POST.get('time')
         solicitude.save()
         return HttpResponse(200)
-        
-
 
 """
-
-
 @login_required
-def current(request,item_id):
-    item_parameters = {}
+def current(request, item_id):
     try:
         item = Item.objects.get(pk=item_id)
         item_parameters = {'item': {
@@ -86,15 +81,13 @@ def current(request,item_id):
         raise Http404()
     params = prepare_parameters(request)
     params.update(item_parameters)
-    """
-    dealers = Dealers.objects.filter()
-    dealers_serializer = DealerSerializer(restaurants, many=True)
+    dealers = Dealer.objects.filter()
+    dealers_serializer = DealerSerializer(dealers, many=True)
     params.update({
         'dealers': dealers_serializer.data,
     })
-    """
     return render(request, 'current_order.html', params)
-
+"""
 
 @login_required
 def dealer_h(request):
