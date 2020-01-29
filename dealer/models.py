@@ -36,4 +36,4 @@ class Solicitude(models.Model):
 class SolicitudeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Solicitude
-        fields = ('id', 'order_id', 'dealer_id','time')
+        fields = ('id', 'order_id', 'dealer_id', 'time')

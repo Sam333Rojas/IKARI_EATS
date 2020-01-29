@@ -1,6 +1,6 @@
 {% extends "logged_base.html" %}
 {% block inner-content %}
-    {% comment %}
+  {% comment %}
      #ordenes activas
      {% for order in orders %}
     <div class="row">
@@ -24,7 +24,7 @@
     {% endfor %}
     {% endcomment %}
 
-    {% comment %}
+  {% comment %}
     # aqui se reciben los candidatos a dealer
     {% for solicitude in solicitudes %}
        #agrupar por order_id
@@ -40,31 +40,41 @@
 {% endblock %}
 
 {% block additional_js %}
-    <script src="{% static "js/min_heap.js" %}"></script>
-    {% comment %}
-    # aqui se reciben los candidatos a dealer
-    var orders = []
-    {% for solicitude in solicitudes %}
-        if (orders[{{ solicitude.order.id }}]) {
-            orders[{{ solicitude.order.id }}].push(solicitude)
-        } else {
-            orders[{{ solicitude.order.id }}] = [solicitude]
-        }
+  <script src="{% static "js/min_heap.js" %}"></script>
+  <script>
+      var orders = [];
+      var orders_winner = [];
+      {% for solicitude in solicitudes %}
+          if (orders[{{ solicitude.order.id }}]) {
+              orders[{{ solicitude.order.id }}].push({'id': {{ solicitude.id }}, 'time': {{ solicitude.time }}})
+          } else {
+              orders[{{ solicitude.order.id }}] = [{'id': {{ solicitude.id }}, 'time': {{ solicitude.time }}}]
+          }
+      {% endfor %}
 
-        for (order in orders) {
-            queue = PriorityQueue('time', PriorityQueue.MIN_HEAP);
-            for solicitude in order {
-                queue.insert(solicitude);
-            }
-            winner = queue.getHighestPriorityElement();
-        }
+      for (var i = 0; i <= orders.length; i++) {
+          var order = orders[i];
+          if (!order) {
+              continue;
+          }
+          var queue = new PriorityQueue('time', PriorityQueue.MIN_HEAP);
+          for (var solicitude of order) {
+              queue.insert(solicitude);
+          }
+          orders_winner[i] = queue.getHighestPriorityElement();
 
-       #agrupar por order_id
-       {% for  in  %}
-        <script>
-        //mandar al min heap
-        </script>
-       {% endfor %}
-    {% endfor %}
-    {% endcomment %}
+          $.post({
+              data: {'order_id': i, 'solicitude_id': orders_winner[i]['id']},
+              url: '',
+              beforeSend: function (xhr, settings) {
+                  if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                      xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                  }
+              },
+              success: function () {
+                  console.log('bien!');
+              }
+          });
+      }
+  </script>
 {% endblock %}

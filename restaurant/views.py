@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login as django_login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render
 
 from client.models import Order, OrderSerializer
@@ -11,7 +11,7 @@ from restaurant.models import Item, Restaurant
 
 
 @login_required
-def restaurant_home_view(request,params):
+def restaurant_home_view(request, params):
     restaurant_id = request.user.id
     restaurant_params = {}
 
@@ -64,28 +64,40 @@ def item_view(request, item_id):
 
 @login_required
 def active_sales(request):
-    
-    # revisa todas las solicitude en donde la order involucre al restaurant ?
-
-    sol = Solicitude.objects.raw("""
-SELECT *
-  FROM dealer_solicitude
- WHERE order_id IN (
-                   SELECT id
-                     FROM client_order
-                    WHERE restaurant_id={}
-                   );
-    """.format(request.user.id))
-    solicitude_serializer = SolicitudeSerializer(sol, many=True)
-    # que el dealer no sea nulo en las orders
-    orders = Order.objects.filter(restaurant=request.user)
-    orders_serializer = OrderSerializer(orders, many=True)
-    params = prepare_parameters(request)
-    params.update({
-        'solicitudes': solicitude_serializer.data,
-        'orders': orders_serializer.data,
-    })
-    return render(request, 'active_sales.html', params)
+    if request.method == 'GET':
+        sol = Solicitude.objects.raw("""
+    SELECT *
+      FROM dealer_solicitude
+     WHERE order_id IN (
+                       SELECT id
+                         FROM client_order
+                        WHERE restaurant_id={}
+                       );
+        """.format(request.user.id))
+        solicitude_serializer = SolicitudeSerializer(sol, many=True)
+        # que el dealer no sea nulo en las orders
+        orders = Order.objects.filter(restaurant=request.user,status=1)
+        orders_ready = Order.objects.filter(restaurant=request.user,status=2)
+        orders_serializer = OrderSerializer(orders, many=True)
+        orders_ready_serializer = OrderSerializer(orders_ready, many=True)
+        params = prepare_parameters(request)
+        params.update({
+            'solicitudes': solicitude_serializer.data,
+            'orders': orders_serializer.data,
+            'orders_ready': orders_ready_serializer.data,
+        })
+        return render(request, 'active_sales.html', params)
+    else:
+        try:
+            order = Order.objects.get(pk=request.POST.get('order_id'))
+            order.status = 1
+            order.save()
+            solicitude = Solicitude.objects.get(pk=request.POST.get('solicitude_id'))
+            order.dealer = solicitude.dealer
+            order.save()
+            return HttpResponse(200)
+        except:
+            return HttpResponse(400)
 
 
 @login_required
@@ -110,5 +122,3 @@ def restaurant_sign_in_view(request):
             return HttpResponseRedirect('/login/')
     else:
         return render(request, 'reg_restaurant.html', {'form': restaurant_form})
-
-
