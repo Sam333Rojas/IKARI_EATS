@@ -92,9 +92,6 @@ def active_sales(request):
             order = Order.objects.get(pk=request.POST.get('order_id'))
             order.status = 1
             order.save()
-            solicitude = Solicitude.objects.get(pk=request.POST.get('solicitude_id'))
-            order.dealer = solicitude.dealer
-            order.save()
             return HttpResponse(200)
         except:
             return HttpResponse(400)
