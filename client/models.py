@@ -31,7 +31,7 @@ class Order(models.Model):
     id = models.AutoField(primary_key=True)
     restaurant = models.ForeignKey(Restaurant, on_delete=None)
     client = models.ForeignKey(Client, on_delete=None)
-    dealer = models.ForeignKey(Dealer, on_delete=None)
+    # dealer = models.ForeignKey(Dealer, on_delete=None)
     item = models.ForeignKey(Item, on_delete=None)
     status = models.IntegerField(default=1)
 
