@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from rest_framework import serializers
+from rest_framework import serializers as ser
 
 from restaurant.models import UserSerializer
 
@@ -18,7 +18,7 @@ class Dealer(models.Model):
         db_table = 'dealer'
 
 
-class DealerSerializer(serializers.ModelSerializer):
+class DealerSerializer(ser.ModelSerializer):
     user = UserSerializer()
 
     class Meta:
@@ -33,7 +33,7 @@ class Solicitude(models.Model):
     time = models.DecimalField(decimal_places=120, max_digits=128)
 
 
-class SolicitudeSerializer(serializers.ModelSerializer):
+class SolicitudeSerializer(ser.ModelSerializer):
     class Meta:
         model = Solicitude
         fields = ('id', 'order_id', 'dealer_id', 'time')
