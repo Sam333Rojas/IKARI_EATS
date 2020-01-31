@@ -8,7 +8,7 @@ from django.contrib.auth import logout
 
 from client.models import Order, OrderSerializer
 from dealer.models import Dealer
-from restaurant.models import Restaurant, RestaurantSerializer
+from restaurant.models import Restaurant
 
 
 def test_template(request):
@@ -54,7 +54,7 @@ def home_view(request):
         if request.method == 'GET':
             dealer_id = request.user.id
             try:
-                dealer = Restaurant.objects.get(pk=dealer_id)
+                dealer = Dealer.objects.get(pk=dealer_id)
                 dealer_params = {'dealer': {
                     'name': dealer.user.first_name,
                     'status': dealer.status,
