@@ -21,7 +21,7 @@ from client.views import search_view, active_view, c_sales_view, confirmation_vi
 from core.views import test_template, redirect_home, logout_view, home_view
 from authentication.views import login, reg_restaurant
 from dealer.views import current, dealer_h, dealer_sign_in_view
-from project_test.views import linked_list_test, python_list_test
+from project_test.views import linked_list_test, python_list_test, heap_test
 from restaurant.views import items_view, item_view, active_sales, old_sales, restaurant_sign_in_view
 
 urlpatterns = [
@@ -44,6 +44,7 @@ urlpatterns = [
     path('restaurant_sales/', old_sales),
     path('test/linked_list/<int:n>', linked_list_test),
     path('test/python_list/<int:n>', python_list_test),
+    path('test/heap_test/', heap_test),
     path('registration/restaurant', restaurant_sign_in_view, name="reg_rest"),
     path('registration/client', client_sign_in_view, name="reg_client"),
     path('registration/deliverer', dealer_sign_in_view, name="reg_del"),

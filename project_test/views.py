@@ -2,6 +2,8 @@ from time import time
 
 from django.shortcuts import render
 
+from project_test.models import TestObject, TestObjectSerializer
+
 
 class Node:
     def __init__(self, data=None, next_node=None):
@@ -126,3 +128,15 @@ def python_list_test(request, n):
     results['python_list_delete'] = t_total1
 
     return render(request, 'test_2.html', results)
+
+
+def heap_test(request):
+    for i in range(10):
+        my_object = TestObject.objects.create()
+        my_object.time = i + 50
+        my_object.save()
+
+    my_objects = TestObject.objects.all()
+    my_objects_serializer = TestObjectSerializer(my_objects, many=True)
+    results = {'group_objects': my_objects_serializer.data}
+    return render(request, 'heap_test.html', results)

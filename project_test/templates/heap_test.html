@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+{% block additional_js %}
+    <script src="{% static "js/min_heap.js" %}"></script>
+    <script>
+        var objects = [];
+        var object_winner ;
+        {% for object_test in group_objects %}
+            objects.push({'id': {{ object_test.id }}, 'time': {{ object_test.time }}})
+        {% endfor %}
+        var queue = new PriorityQueue('time', PriorityQueue.MIN_HEAP);
+        for (var object_test in objects) {
+            if (objects.hasOwnProperty(object_test)) {
+                queue.insert(objects[object_test]);
+            }
+        }
+        object_winner = queue.getHighestPriorityElement();
+        console.log(object_winner.id)
+    </script>
+{% endblock %}

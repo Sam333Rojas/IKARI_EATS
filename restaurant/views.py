@@ -90,7 +90,9 @@ def active_sales(request):
     else:
         try:
             order = Order.objects.get(pk=request.POST.get('order_id'))
-            order.status = 1
+            solicitude = Solicitude.objects.get(pk=request.POST.get('solicitude_id'))
+            solicitude.status = 2
+            order.status = 2
             order.save()
             return HttpResponse(200)
         except:

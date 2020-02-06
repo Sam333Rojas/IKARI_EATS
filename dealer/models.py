@@ -31,6 +31,7 @@ class Solicitude(models.Model):
     order = models.ForeignKey('client.Order', on_delete=None)
     dealer = models.ForeignKey(Dealer, on_delete=None)
     time = models.DecimalField(decimal_places=120, max_digits=128)
+    status = models.IntegerField(default=1)
 
 
 class SolicitudeSerializer(ser.ModelSerializer):
