@@ -17,7 +17,7 @@ def login(request):
             django_login(request, user)
             return HttpResponseRedirect('/home/')
         else:
-            return render(request, 'login.html', {'error': True})
+            return render(request, 'login.html', {'login_error': True})
 
 
 def reg_restaurant(request):

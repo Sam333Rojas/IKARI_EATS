@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
 
     <title>IKARI-EATS</title>
 </head>
@@ -33,7 +33,7 @@
     body {
         padding-top: 40px;
         padding-bottom: 40px;
-        background-color: #eee;
+        background-color: white;
     }
 
     .form-signin {
@@ -85,32 +85,33 @@
 </style>
 
 <body class="text-center">
-{% if error %}
-    <h1>MAL</h1>
-{% endif %}
 <div class="page-header">
-    <h1>Ikari-Eats</h1>
-</div><!-- F.page-header -->
-<div class="jumbotron">
-    <h2>On-demand Meal Delivery Web Application</h2>
-</div><!-- F.jumbotron-->
+    <a href="{% url 'home' %}"><h1><img src="{% static "img/logo.jpeg" %}" alt=""
+                                        style="width: 60%; border-radius: 2%;"></h1></a>
+</div>
+<br>
 <div class="container">
+    {% if login_error %}
+        <div class="alert alert-danger" role="alert">El usuario/contraseña no coincide con ningún usuario de la
+            plataforma
+        </div>
+    {% endif %}
     <form action="" method="POST" class="form-sigin">
         {% csrf_token %}
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <h1 class="h3 mb-3 font-weight-normal" style="font-family: 'Arial '">Sign in</h1>
 
 
-            <div class="row form-group">
-                <label for="inputEmail" class="sr-only">User name</label>
-                <input name="username" type="text" id="inputEmail" class="form-control" placeholder="User name"
-                       required=""
-                       autofocus="">
-            </div>
-            <div class="row form-group">
-                <label for="inputEmail" class="sr-only">Password</label>
-                <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password"
-                       required="" autofocus="">
-            </div>
+        <div class="row form-group">
+            <label for="inputEmail" class="sr-only">User name</label>
+            <input name="username" type="text" id="inputEmail" class="form-control" placeholder="User name"
+                   required=""
+                   autofocus="" style="border-color: #2E9AFE">
+        </div>
+        <div class="row form-group">
+            <label for="inputEmail" class="sr-only">Password</label>
+            <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password"
+                   required="" autofocus="" style="border-color: #2E9AFE">
+        </div>
 
         <div class="checkbox mb-3">
             <label>
@@ -118,43 +119,51 @@
             </label>
         </div>
         <button name="submit" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <br>
         <p class="lead">By proceeding, I agree <b>Ikari-Eats's</b> Terms of Use and acknowledge that I have read the
             Privacy
             Policy.</p>
-        <a href="{% url "reg_client" %}" >Register as Client</a>
         <br>
-        <a href="{% url "reg_rest" %}">Register as Restaurant</a>
-        <br>
-        <a href="{% url "reg_del" %}">Register as Deliverer</a>
+        <div class="container ">
+            <div class="row">
+            <div class="col-2"></div>
+            <div class="col">
+                <a href="{% url "reg_client" %}" class="btn btn-outline-primary">Register as Client</a>
+            </div>
+            <div class="col">
+                <a href="{% url "reg_rest" %}"class="btn btn-outline-primary">Register as Restaurant</a>
+            </div>
+            <div class="col">
+                <a href="{% url "reg_del" %}" class="btn btn-outline-primary">Register as Deliverer</a>
+            </div>
+            <div class="col-2"></div>
+                </div>
+        </div>
     </form><!--F.form-->
 
 </div>
-<div class="jumbotron">
-
-    <h2>Where do you want to eat today?</h2>
-</div><!-- F.jumbotron-->
-
+<hr>
 <div class="container marketing">
 
     <!-- <div class="row justify-content-md-center"> </div>--F.row justify-contect-md-center-->
     <div class="row">
         <div class="col col-lg-4">
             <img class="rounded-circle"
-                 src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt=""
+                 src="{% static "img/mc.jpg" %}" alt=""
                  width="140" height="140">
             <h3>Mc Donalds</h3>
         </div>
         <div class="col col-lg-4">
             <img class="rounded-circle"
-                 src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt=""
+                 src="{% static "img/papa.jpg" %}" alt=""
                  width="140" height="140">
-            <h3>Other</h3>
+            <h3>Papa Johns</h3>
         </div>
         <div class="col col-lg-4">
             <img class="rounded-circle"
-                 src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt=""
+                 src="{% static "img/kfc.png" %}" alt=""
                  width="140" height="140">
-            <h3>Other</h3>
+            <h3>KFC</h3>
         </div>
     </div><!-- F. row -->
 
