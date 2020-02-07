@@ -3,10 +3,9 @@ function PriorityQueue(criteria, heapType) {
     this.length = 0;
     this.queue = [];
     this.isMax = !!heapType;
-    if ( heapType !== 0 || heapType !== 1 ){
-        throw heapType + " no es soportada.";
-    }
+    //
 }
+
 PriorityQueue.prototype.insert = function (value) {
     if (!value.hasOwnProperty(this.criteria)) {
         throw "No se puede insertar " + value + " Porque este no tiene el campo '" + this.criteria + "'.";
@@ -67,9 +66,15 @@ PriorityQueue.prototype.evaluate = function (self, target) {
         return false;
     }
     if (this.isMax) {
-        return (this.queue[self][this.criteria] > this.queue[target][this.criteria]);
+        //
+        if (typeof this.queue[target] !== 'undefined') {
+            return (this.queue[self][this.criteria] > this.queue[target][this.criteria]);
+        }
     } else {
-        return (this.queue[self][this.criteria] < this.queue[target][this.criteria]);
+        //
+        if (typeof this.queue[target] !== 'undefined') {
+            return (this.queue[self][this.criteria] < this.queue[target][this.criteria]);
+        }
     }
 };
 PriorityQueue.prototype.getParentOf = function (index) {
@@ -81,5 +86,6 @@ PriorityQueue.prototype.getLeftOf = function (index) {
 PriorityQueue.prototype.getRightOf = function (index) {
     return index * 2 + 2;
 };
-PriorityQueue.MAX_HEAP = 0;
-PriorityQueue.MIN_HEAP = 1;
+//
+PriorityQueue.MAX_HEAP = 1;
+PriorityQueue.MIN_HEAP = 0;

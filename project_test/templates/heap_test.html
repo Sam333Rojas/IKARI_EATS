@@ -9,9 +9,11 @@
             objects.push({'id': {{ object_test.id }}, 'time': {{ object_test.time }}})
         {% endfor %}
         var queue = new PriorityQueue('time', PriorityQueue.MIN_HEAP);
-        for (var object_test in objects) {
-            if (objects.hasOwnProperty(object_test)) {
-                queue.insert(objects[object_test]);
+        for (var i in objects) {
+            //
+            if (objects.hasOwnProperty(i)) {
+                var my_object = objects[i]
+                    queue.insert(my_object);
             }
         }
         object_winner = queue.getHighestPriorityElement();
