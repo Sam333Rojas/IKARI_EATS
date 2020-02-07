@@ -1,30 +1,30 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
-  <div class="page-header">
-    <h1>Ikari-Eats</h1>
-  </div>
-
-  <div class="jumbotron">
-    <h2>Registration Form: {% block tittle %}{% endblock %} </h2>
-  </div>
-
-  <div class="container">
-    {% comment %}<form action="" method="post" class="form-sigin">
-        {% csrf_token %}
-        <h1 class="h3 mb-3 font-weight-normal">something</h1>
-          {% block inputs %}
-          {% endblock %}
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"> I accept terms and conditions
-            </label>
-        </div>
-    </form><!--F.form-->{% endcomment %}
-    <form action="" method="post">
-      {% csrf_token %}
-      {% block form %}{% endblock %}
-      <button name="submit " class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    </form>
+    <div class="page-header text-center">
+        <a href="{% url 'home' %}"><h1><img src="{% static "img/logo.jpeg" %}"  alt=""
+                                            style="width: 35%; border-radius: 2%;"></h1></a>
+    </div>
+    <section class="features-icons bg-light " style="border-radius: 15px">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-10 col-sm-12"
+                     style="background-color:#98999b; padding:10px; border-radius: 15px; margin:5px;">
+                    <div class="container features-icons">
+                        <h2 style="font-family: Roboto" class="text-center">Registration Form: {% block tittle %}{% endblock %} </h2>
+                        <br>
+                        <div class="container">
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                {% block form %}{% endblock %}
+                                <br>
+                                <button name="submit " class="btn btn-lg btn-primary btn-block" type="submit">Sign in
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+    </section>
     <br>
-  </div>
+
 {% endblock %}
