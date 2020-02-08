@@ -39,9 +39,8 @@ class Order(models.Model):
 class OrderSerializer(serializers.ModelSerializer):
     client = ClientSerializer()
     restaurant = RestaurantSerializer()
-    dealer = DealerSerializer()
     item = ItemSerializer()
 
     class Meta:
         model = Order
-        fields = ('id', 'client', 'dealer', 'restaurant','item')
+        fields = ('id', 'client', 'restaurant','item')

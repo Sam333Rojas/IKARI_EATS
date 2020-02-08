@@ -8,7 +8,7 @@ def login(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
             return HttpResponseRedirect('/home/')
-        return render(request, 'login.html', {'error': False})
+        return render(request, 'login.html', {'login_error': False})
     elif request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')

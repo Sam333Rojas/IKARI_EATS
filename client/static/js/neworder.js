@@ -6,7 +6,7 @@ recibe la orden con datos del dealer
 muestra los puntos y recorrido
 muestra tiempo total de recorrido
  */
-let map;
+var map;
 //let client_lat; let client_log;
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -70,7 +70,7 @@ function calculateAndDisplayRoute(pointA, pointB) {
 
 //muestra la posicion actual del cliente
 //falta enviar esa posicion a la orden
-let geoSuccess = function (position) {
+var geoSuccess = function (position) {
     startPos = position;
     console.log(position)
     // user_lat = position.coords.latitude ;user_lat = position.coords.longitude ;
@@ -80,7 +80,7 @@ let geoSuccess = function (position) {
         title: 'Hello World!'
     });
 };
-let geoError = function (error) {
+var geoError = function (error) {
     switch (error.code) {
         case error.TIMEOUT:
             console.log('error');

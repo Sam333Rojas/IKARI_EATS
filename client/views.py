@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import HttpResponseForbidden, HttpResponseRedirect, Http404
+from django.http import HttpResponseForbidden, HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login as django_login, logout as django_logout
 
 from client.forms.client_form import ClientForm
-from client.models import Order
+from client.models import Order, Client, ClientSerializer, OrderSerializer
 from core.views import prepare_parameters
 from restaurant.models import Restaurant, Item, RestaurantSerializer, ItemSerializer
 
@@ -17,7 +17,8 @@ def search_view(request):
 
     term = request.GET.get('term')
     restaurants = Restaurant.objects.filter(Q(user__first_name__icontains=term) | Q(tag__label__icontains=term))
-    items = Item.objects.filter(Q(name__icontains=term) | Q(description__icontains=term) | Q(tag__label__icontains=term))
+    items = Item.objects.filter(
+        Q(name__icontains=term) | Q(description__icontains=term) | Q(tag__label__icontains=term))
     restaurants_serializer = RestaurantSerializer(restaurants, many=True)
     items_serializer = ItemSerializer(items, many=True)
 
@@ -31,18 +32,37 @@ def search_view(request):
 
 
 def client_home_view(request, params):
+    if request.method == 'POST':
+        client = Client.objects.get(pk=request.user.id)
+        client.latitude = request.POST.get('lat')
+        client.longitude = request.POST.get('log')
+        client.save()
+        return HttpResponse(200)
     return render(request, 'home.html', params)
 
 
 @login_required
-def active_view(request,item_id):
-   # crear order 
-    client = request.user
-    item = Item.objects.get(pk=item_id)
-    restaurant = Restaurant.objects.get(pk=item.restaurant_id)
-    order = Order.objects.create(client=client.id, restaurant=item.restaurant)
-    order.save()
-    return render(request, 'active_purchase.html', prepare_parameters(request))
+def active_view(request, item_id):
+    try:
+        current_order = Order.objects.get(status=1, client__user_id=request.user.id)
+        if current_order is not None:
+            return render(request, 'active_purchase.html', prepare_parameters(request), {'error': True})
+    except:
+        client = Client.objects.get(pk=request.user.id)
+        client_serializer = ClientSerializer(client, many=False)
+        item = Item.objects.get(pk=item_id)
+        restaurant_id = item.restaurant.user.id
+        restaurant = Restaurant.objects.get(pk=restaurant_id)
+        restaurant_serializer = RestaurantSerializer(restaurant, many=False)
+        order = Order.objects.create(client=client, restaurant=restaurant, item=item)
+        order_serializer = OrderSerializer(order, many=False)
+        order.save()
+        params = {
+            'restaurant': restaurant_serializer.data,
+            'client': client_serializer.data,
+            'error': False,
+        }
+        return render(request, 'active_purchase.html', prepare_parameters(request), params)
 
 
 @login_required
