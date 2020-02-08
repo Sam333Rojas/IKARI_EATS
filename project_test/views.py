@@ -1,3 +1,4 @@
+from random import randrange
 from time import time
 
 from django.shortcuts import render
@@ -133,10 +134,22 @@ def python_list_test(request, n):
 def heap_test(request):
     for i in range(10):
         my_object = TestObject.objects.create()
-        my_object.time = i + 50
+        my_object.time = randrange(0, 200, 1)
         my_object.save()
 
     my_objects = TestObject.objects.all()
     my_objects_serializer = TestObjectSerializer(my_objects, many=True)
     results = {'group_objects': my_objects_serializer.data}
     return render(request, 'heap_test.html', results)
+
+
+def map_test(request):
+    results = {
+        'restaurant': {'latitude': 4.694804,
+                       'longitude': -74.08615612},
+        'dealer': {'latitude': 4.762609,
+                   'longitude': -74.046230},
+        'client': {'latitude': 4.691450,
+                   'longitude': -74.075145}
+    }
+    return render(request, 'map_test.html', results)

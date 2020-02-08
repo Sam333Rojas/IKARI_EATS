@@ -1,17 +1,52 @@
 {% extends "sales.html" %}
+{% load static %}
 {% block title %}
     ACTIVE Purchases
 {% endblock %}
 {% block inner-title %}
-   In this moment purchases!
+    In this moment purchases!
 
 {% endblock %}
+{% if error %}
+    <div class="alert alert-danger" role="alert"> Ya tienes una orden en proceso o aun no has creado una!
+    </div>
+{% endif %}
 {% block map %}
-     <div id="map"></div>
- <script>
- //usando user lat y log se crea la order
- </script>
+     <style>
+  	#map {
+        height: 100%;
+        }
+
+        html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        }
+	</style>
+    <div id="map"></div>
 {% endblock %}
 {% block buttons %}
 
+{% endblock %}
+
+{% block additional_js %}
+  <script>
+  {% if dealer.latitude.latitude is None %}
+      var dealer_lat  = {{ client.latitude }};
+      var dealer_log  ={{ client.longuitude }};
+  {% else %}
+      var dealer_lat  = {{ solicitude.dealer.latitude }};
+      var dealer_log  = {{ solicitude.dealer.longuitude }};
+  {% endif %}
+
+      var res_lat = {{restaurant.latitude }};
+      var res_log = {{restaurant.longitude }};
+
+      var client_lat = {{ client.latitude }};
+      var client_log = {{ client.longitude }};
+
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqxIL3Ii8OAx3f8FdtDw5UjW3AM6sYDyQ&callback=initMap"
+          async defer></script>
+  <script src="{% static "js/active_purchase.js" %}"></script>
 {% endblock %}

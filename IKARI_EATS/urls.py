@@ -16,13 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-
 from client.views import search_view, active_view, c_sales_view, confirmation_view, restaurant_view, client_sign_in_view
 from core.views import test_template, redirect_home, logout_view, home_view
 from authentication.views import login, reg_restaurant
 from dealer.views import current, dealer_h, dealer_sign_in_view
-from project_test.views import linked_list_test, python_list_test, heap_test
-from restaurant.views import items_view, item_view, active_sales, old_sales, restaurant_sign_in_view
+from project_test.views import linked_list_test, python_list_test, heap_test, map_test
+from restaurant.views import items_view, item_view, active_sales, old_sales, restaurant_sign_in_view, item_creation
 
 urlpatterns = [
     path('', redirect_home),
@@ -32,11 +31,11 @@ urlpatterns = [
     path('search/', search_view),
     path('home/', home_view, name='home'),
     path('logout/', logout_view, name='logout'),
-    path('active_purchase/', active_view),
+    path('client/buy/<int:item_id>', active_view, name='active'),
     path('client_sales/', c_sales_view),
     path('confirmation/', confirmation_view),
     path('restaurant/<int:restaurant_id>', restaurant_view, name='restaurant'),
-    path('order/', current, name ='current'),
+    path('order/', current, name='current'),
     path('dealer_home/', dealer_h),
     path('items/', items_view),
     path('item/<int:item_id>/', item_view, name='item'),
@@ -45,8 +44,10 @@ urlpatterns = [
     path('test/linked_list/<int:n>', linked_list_test),
     path('test/python_list/<int:n>', python_list_test),
     path('test/heap_test/', heap_test),
+    path('test/map_test/', map_test),
     path('registration/restaurant', restaurant_sign_in_view, name="reg_rest"),
     path('registration/client', client_sign_in_view, name="reg_client"),
     path('registration/deliverer', dealer_sign_in_view, name="reg_del"),
+    path('registration/item', item_creation, name="reg_item"),
 
 ]

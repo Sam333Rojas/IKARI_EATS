@@ -1,8 +1,11 @@
 {% extends "logged_base.html" %}
 {% block inner-content %}
     <h2>Restaurants</h2>
+    <div class="container">
     {% for restaurant in restaurants %}
+        <hr>
         <div class="row">
+
             <div class="col-md-7">
                 <a href="#">
                     <img class="img-fluid rounded mb-3 mb-md-0" src="http://placehold.it/700x300" alt="">
@@ -15,6 +18,7 @@
                 <a href="{% url "restaurant" restaurant_id=restaurant.user_id %}" class="btn btn-primary">More</a>
             </div>
         </div>
+
     {% endfor %}
     <hr>
     <h2>Items</h2>
@@ -28,9 +32,11 @@
             <div class="col-md-5">
                 <h3>{{ item.name }}</h3>
                 <p>{{ item.description }}</p>
-                <p>{{ item.price }}.</p>
-                <a href="{% url "item" item_id=item.id %}" class="btn btn-primary">More</a>
+                <h5>$ {{ item.price }}.</h5>
+                <a href="{% url "active" item_id=item.id %}" class="btn btn-primary">Buy</a>
             </div>
         </div>
+        <hr>
     {% endfor %}
+    </div>
 {% endblock %}

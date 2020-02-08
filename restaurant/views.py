@@ -6,6 +6,7 @@ from django.shortcuts import render
 from client.models import Order, OrderSerializer
 from core.views import prepare_parameters
 from dealer.models import SolicitudeSerializer, Solicitude
+from restaurant.forms.item_form import ItemForm
 from restaurant.forms.restaurant_form import RestaurantForm
 from restaurant.models import Item, Restaurant
 
@@ -76,8 +77,8 @@ def active_sales(request):
         """.format(request.user.id))
         solicitude_serializer = SolicitudeSerializer(sol, many=True)
         # que el dealer no sea nulo en las orders
-        orders = Order.objects.filter(restaurant=request.user,status=1)
-        orders_ready = Order.objects.filter(restaurant=request.user,status=2)
+        orders = Order.objects.filter(restaurant=request.user, status=1)
+        orders_ready = Order.objects.filter(restaurant=request.user, status=2)
         orders_serializer = OrderSerializer(orders, many=True)
         orders_ready_serializer = OrderSerializer(orders_ready, many=True)
         params = prepare_parameters(request)
@@ -121,3 +122,18 @@ def restaurant_sign_in_view(request):
             return HttpResponseRedirect('/login/')
     else:
         return render(request, 'reg_restaurant.html', {'form': restaurant_form})
+
+
+def item_creation(request):
+    item_form = ItemForm(request.POST or None, request=request)
+    if request.method == 'POST':
+        if item_form.is_valid():
+            item = item_form.save()
+            if item is not None:
+                return HttpResponseRedirect('/home/')
+            else:
+                return render(request, 'reg_item.html', {'error': True})
+        else:
+            return render(request, 'reg_item.html', {'error': True})
+    else:
+        return render(request, 'reg_item.html', {'form': item_form})

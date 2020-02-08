@@ -1,28 +1,30 @@
 {% extends "logged_base.html" %}
 {% block title %}
-    Restaurant
+    {{ restaurant.name }}
 {% endblock %}
 {% block inner-content %}
-    <header class="jumbotron my-4">
+    <header class="jumbotron my-4" style="border-radius: 15%">
         <h1 class="display-3">{{ restaurant.name }}</h1>
-        <p class="lead">{{ restaurant.description }}</p>
-     </header>
-
+        <p>{{ restaurant.description }}</p>
+    </header>
+    <div class="container">
         <div class="row text-center">
             {% for item in restaurant.items %}
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="card h-100">
-                    <img class="card-img-top" src="http://placehold.it/500x325" alt="">
-                    <div class="card-body">
-                        <h4 class="card-title">{{ item.name }}</h4>
-                        <p class="card-text">{{ item.description }}</p>
-                    </div>
-                    <div class="card-footer">
-                        <a href="{% url "item" item_id=item.id %}" class="btn btn-primary">{{ item.price }}</a>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="http://placehold.it/500x325" alt="">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ item.name }}</h4>
+                            <p class="card-text">{{ item.description }}</p>
+                            <h5>$ {{ item.price }}</h5>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{% url "item" item_id=item.id %}"
+                               class="btn btn-primary">Buy</a>
+                        </div>
                     </div>
                 </div>
-            </div>
             {% endfor %}
         </div>
-
+    </div>
 {% endblock %}

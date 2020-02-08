@@ -45,7 +45,7 @@ class Item(models.Model):
     id = models.AutoField(primary_key=True)
     price = models.IntegerField()
     description = models.TextField()
-    path = models.CharField(max_length=64)
+    path = models.CharField(max_length=64, blank=True, null=True)
     name = models.CharField(max_length=12)
     tag = models.ForeignKey(Tag, on_delete=None)
     restaurant = models.ForeignKey(Restaurant, on_delete=None, related_name='items')

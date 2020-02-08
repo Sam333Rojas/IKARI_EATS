@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">IKARI EATS</a>
+
+    <nav class=" navbar navbar-expand-lg fixed-top " style="background-color:#2E64FE;">
+        <div class="container  ">
+            <a class="navbar-brand text-light" href="#">IKARI EATS</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                     aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -11,36 +12,40 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="{% url "home" %}">Home
+                        <a class="nav-link text-light" href="{% url "home" %}">Home
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">In Process</a>
-                    </li>
-                  {% if user_group == 'client' %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">My purchases</a>
-                    </li>
-                  {% elif user_group == 'restaurant' %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">My sales</a>
-                    </li>
-                  {% elif user_group == 'dealer' %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">My deliveries</a>
-                    </li>
-                  {% endif %}
+                    {% if user_group == 'client' %}
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="#">My purchases</a>
+                        </li>
+                    {% elif user_group == 'restaurant' %}
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="#">My sales</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="{% url "reg_item" %}">Add Product</a>
+                        </li>
+                    {% elif user_group == 'dealer' %}
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="#">In Process</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="#">My deliveries</a>
+                        </li>
+                    {% endif %}
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url "logout" %}">log out</a>
+                        <a class="nav-link text-light" href="{% url "logout" %}">log out</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+
     {% block inner-content %}{% endblock %}
-    <footer class="py-5 bg-dark">
+    <footer class="py-5 " style="background-color:#2E64FE;">
         <div class="container">
             <p class="m-0 text-center text-white">Copyright &copy; Ikari EATS 2019</p>
         </div>
