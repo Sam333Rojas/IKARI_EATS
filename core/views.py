@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth import logout
 
-from client.models import Order, OrderSerializer
+from client.models import Order, OrderSerializer, Client
 from dealer.models import Dealer
 from restaurant.models import Restaurant
 
@@ -19,6 +19,14 @@ def test_template(request):
 def home_view(request):
     params = {'user_group': request.user.groups.first().name}
     if params['user_group'] == 'client':
+        if request.method == 'GET':
+            return render(request, 'home.html', params)
+        elif request.method == 'POST':
+            client = Client.objects.get(pk=request.user.id)
+            client.latitude = request.POST.get('lat')
+            client.longitude = request.POST.get('log')
+            client.save()
+            return HttpResponse(200)
         return render(request, 'home.html', params)
     elif params['user_group'] == 'restaurant':
         if request.method == 'GET':
@@ -72,8 +80,13 @@ def home_view(request):
             }
             params.update(order_params)
             return render(request, 'dealer_home.html', params)
-        else:
-            pass
+        elif request.method == 'POST':
+            dealer = Dealer.objects.get(pk=request.user.id)
+            dealer.latitude = request.POST.get('lat')
+            dealer.longitude = request.POST.get('log')
+            dealer.save()
+            return HttpResponse(200)
+        return render(request, 'dealer_home.html', params)
 
 
 def redirect_home(request):

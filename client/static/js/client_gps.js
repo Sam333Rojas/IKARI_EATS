@@ -4,15 +4,20 @@ function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
-
+console.log("1");
 $(function () {
     var client_lat;
     var client_log;
+
+    console.log("2");
+
     var geoSuccess = function (position) {
+        console.log("3");
         startPos = position;
         console.log(position);
         client_lat = position.coords.latitude;
         client_lat = position.coords.longitude;
+        console.log("4");
         console.log(client_lat, client_log);
         $.post({
             data: {'lat': client_lat, 'log': client_log},
@@ -27,6 +32,7 @@ $(function () {
             }
         });
     };
+
     var geoError = function (error) {
         switch (error.code) {
             case error.TIMEOUT:
@@ -34,6 +40,6 @@ $(function () {
                 break;
         }
     };
+
     navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
-    console.log(client_lat, client_log);
 });

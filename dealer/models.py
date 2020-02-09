@@ -30,7 +30,7 @@ class Solicitude(models.Model):
     id = models.AutoField(primary_key=True)
     order = models.ForeignKey('client.Order', on_delete=None)
     dealer = models.ForeignKey(Dealer, on_delete=None)
-    time = models.DecimalField(decimal_places=120, max_digits=128)
+    time = models.DecimalField(decimal_places=120, max_digits=128, null=True)
     status = models.IntegerField(default=1)
 
 

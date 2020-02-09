@@ -1,20 +1,18 @@
 {% extends "logged_base.html" %}
 {% block inner-content %}
     <h1 class="my-4">{% block inner-title %}{% endblock %}
-        <small>Secondary Text</small>
     </h1>
+    <style>
+        #map {
+            height: 30%;
+        }
+    </style>
     <div class="container-fluid" style="height: 500px">
         {% block map %}{% endblock %}
+        {% block others %}
+        {% endblock %}
     </div>
-    <table id="sales_table">
-        <tr>
-            <th>Product name</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Status</th>
-            <th>Date</th>
-        </tr>
-    </table>
+
     {% block buttons %}
     {% endblock %}
 {% endblock %}

@@ -34,5 +34,4 @@ $(function () {
         }
     };
     navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
-    console.log(dealer_lat, dealer_log);
 });

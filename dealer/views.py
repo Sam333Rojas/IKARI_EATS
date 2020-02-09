@@ -12,25 +12,6 @@ from restaurant.models import Item, RestaurantSerializer
 
 
 @login_required
-def dealer_home_view(request, parameters):
-    orders = Order.objects.filter(status=1)
-    orders_serializer = OrderSerializer(orders, many=True)
-    params = parameters
-    params.update({
-        'orders': orders_serializer.data,
-    })
-    # posicion dealer , hacer que se repita cada cierto tiempo mientras este en la  pagina
-
-    if request.method == 'POST':
-        dealer = Dealer.objects.get(pk=request.user.id)
-        dealer.latitude = request.POST.get('lat')
-        dealer.longitude = request.POST.get('log')
-        dealer.save()
-        return HttpResponse(200)
-    return render(request, 'dealer_home.html', params)
-
-
-@login_required
 def current(request, order_id):
     if request.method == 'GET':
         try:
@@ -49,9 +30,6 @@ def current(request, order_id):
             dealer_parameters = {
                 'dealer': dealer_serializer.data, 
             }
-            # dealer crea una solicitud
-            sol = Solicitude.objects.create(dealer=dealer, order=order)
-            sol.save()
         except Order.DoesNotExist:
             raise Http404()
         params = prepare_parameters(request)
@@ -59,9 +37,9 @@ def current(request, order_id):
         params.update(dealer_parameters)
         return render(request, 'current_order.html', params)
     else:
-        solicitude = Solicitude.objects.get(dealer__user=request.user)
-        solicitude.time = request.POST.get('time')
-        solicitude.save()
+        order = Order.objects.get(pk=order_id)
+        time = request.POST.get('time')
+        solicitude = Solicitude.objects.create(order=order, time=time)
         return HttpResponse(200)
 
 """
@@ -89,10 +67,6 @@ def current(request, item_id):
     return render(request, 'current_order.html', params)
 """
 
-@login_required
-def dealer_h(request):
-    return render(request, 'dealer_home.html', prepare_parameters(request))
-
 
 def dealer_sign_in_view(request):
     dealer_form = DealerForm(request.POST or None)
@@ -110,4 +84,4 @@ def dealer_sign_in_view(request):
             #  TODO: Error
             pass
     else:
-        return render(request, 'reg_client.html', {'form': dealer_form})
+        return render(request, 'reg_dealser.html', {'form': dealer_form})

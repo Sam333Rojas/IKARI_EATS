@@ -5,36 +5,25 @@
 {% endblock %}
 {% block inner-title %}
 {% endblock %}
-{% comment %}
-aqui se reciben las orders de los restaurantes
-
-{% for order in orders %}
-    {% if order.status == 1 %}
+{% block others %}
+    <h1 style="font-family: Roboto">Ordenes esperando por ti</h1>
+    {% for order in orders %}
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="card h-100">
                     <img class="card-img-top" src="http://placehold.it/500x325" alt="">
                     <div class="card-body">
-                        <h4 class="card-title">{{ order.id }}</h4>
-                        <p class="card-text">{{ order.restaurant.name }}</p>
-                        <p class="card-text">{{ order.restaruant.address }}</p>
+                        <h5 class="card-title">Order id : {{ order.id }}</h5>
+                        <p class="card-text">Nombre del restaruante : {{ order.restaurant.name }}</p>
+                        <p class="card-text">Direccion del restaurante: {{ order.restaruant.address }}</p>
                     </div>
                     <div class="card-footer">
                         <a href="{% url "current" order_id=order.id %}" class="btn btn-primary">Accept</a>
-                        <script>//calculamos tiempo entre el dealer y el restaurante si da aceptar
-                        var res_lat ={{ order.restaurant.lat }};
-                        var res_log = {{ order.restaurant.log }};
-                        </script>
                     </div>
                 </div>
             </div>
-    {% else %}
-    <h1>No hay ordenes esperando por ti</h1>
-    {% endif %}
+    {% endfor %}
 
-{% endfor %}
-
-{% endcomment %}
-
+{% endblock %}
 {% block additional_js %}
     {% csrf_token %}
     <script type="text/javascript">

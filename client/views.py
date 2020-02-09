@@ -31,37 +31,36 @@ def search_view(request):
     return render(request, 'search.html', params)
 
 
-def client_home_view(request, params):
-    if request.method == 'POST':
-        client = Client.objects.get(pk=request.user.id)
-        client.latitude = request.POST.get('lat')
-        client.longitude = request.POST.get('log')
-        client.save()
-        return HttpResponse(200)
-    return render(request, 'home.html', params)
-
-
 @login_required
 def active_view(request, item_id):
     try:
         current_order = Order.objects.get(status=1, client__user_id=request.user.id)
         if current_order is not None:
-            return render(request, 'active_purchase.html', prepare_parameters(request), {'error': True})
+            params= {'error': True,
+                     'error_type': "ya tienes una orden existente, se te proporcionara la informacion del pedido actual"
+                     }
+            return render(request, 'active_purchase.html', prepare_parameters(request), params)
     except:
         client = Client.objects.get(pk=request.user.id)
         client_serializer = ClientSerializer(client, many=False)
         item = Item.objects.get(pk=item_id)
+        item_serializer = ItemSerializer(item,many=False)
         restaurant_id = item.restaurant.user.id
         restaurant = Restaurant.objects.get(pk=restaurant_id)
         restaurant_serializer = RestaurantSerializer(restaurant, many=False)
-        order = Order.objects.create(client=client, restaurant=restaurant, item=item)
-        order_serializer = OrderSerializer(order, many=False)
-        order.save()
-        params = {
-            'restaurant': restaurant_serializer.data,
-            'client': client_serializer.data,
-            'error': False,
-        }
+        if client.latitude is not None:
+            order = Order.objects.create(client=client, restaurant=restaurant, item=item)
+            order_serializer = OrderSerializer(order, many=False)
+            order.save()
+            params = {
+                'restaurant': restaurant_serializer.data,
+                'client': client_serializer.data,
+                'item': item_serializer.data,
+                'error': False,
+            }
+        else:
+            params = {'error': True,
+                      'error_type': "usuario no tiene latitud ni longitud"}
         return render(request, 'active_purchase.html', prepare_parameters(request), params)
 
 

@@ -12,34 +12,6 @@ from restaurant.models import Item, Restaurant
 
 
 @login_required
-def restaurant_home_view(request, params):
-    restaurant_id = request.user.id
-    restaurant_params = {}
-
-    try:
-        restaurant = Restaurant.objects.get(pk=restaurant_id)
-        restaurant_params = {'restaurant': {
-            'name': restaurant.user.first_name,
-            'description': restaurant.description,
-            'lat': restaurant.latitude,
-            'log': restaurant.longitude,
-            'address': restaurant.address,
-            'items': [{
-                'id': item.id,
-                'name': item.name,
-                'description': item.description,
-                'price': item.price,
-            } for item in restaurant.items.all()]
-        }}
-    except Restaurant.DoesNotExist:
-        raise Http404()
-
-    params = prepare_parameters(request)
-    params.update(restaurant_params)
-    return render(request, 'rest_home.html', params)
-
-
-@login_required
 def items_view(request):
     return render(request, 'items.html', prepare_parameters(request))
 

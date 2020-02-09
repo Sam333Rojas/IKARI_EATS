@@ -12,6 +12,7 @@ class Client(models.Model):
     longitude = models.DecimalField(decimal_places=120, max_digits=128, null=True, blank=True)
 
     '''to format the object'''
+
     def __str__(self):
         return '{} <{}>'.format(self.user.first_name, self.user.id)
 
@@ -21,7 +22,7 @@ class Client(models.Model):
 
 class ClientSerializer(serializers.ModelSerializer):
     user = UserSerializer()
-    
+
     class Meta:
         model = Client
         fields = ['user_id', 'latitude', 'longitude', 'user']
@@ -43,4 +44,4 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ('id', 'client', 'restaurant','item')
+        fields = ('id', 'client', 'restaurant', 'item')
