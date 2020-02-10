@@ -58,11 +58,19 @@
               continue;
           }
           var queue = new PriorityQueue('time', PriorityQueue.MIN_HEAP);
+          for(var i in order){
+              if (order.hasOwnProperty(i)) {
+                var solicitude = order[i]
+                    queue.insert(solicitude);
+            }
+          }
+          /*
           for (var solicitude of order) {
               queue.insert(solicitude);
           }
+           */
           orders_winner[i] = queue.getHighestPriorityElement();
-
+          console.log(orders_winner[i])
           $.post({
               data: {'order_id': i, 'solicitude_id': orders_winner[i]['id']},
               url: '',
