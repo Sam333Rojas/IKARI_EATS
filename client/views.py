@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login as django_login, logout as d
 from client.forms.client_form import ClientForm
 from client.models import Order, Client, ClientSerializer, OrderSerializer
 from core.views import prepare_parameters
+from dealer.models import Solicitude
 from restaurant.models import Restaurant, Item, RestaurantSerializer, ItemSerializer
 
 
@@ -33,35 +34,62 @@ def search_view(request):
 
 @login_required
 def active_view(request, item_id):
+    params = prepare_parameters(request)
     try:
         current_order = Order.objects.get(status=1, client__user_id=request.user.id)
         if current_order is not None:
-            params= {'error': True,
-                     'error_type': "ya tienes una orden existente, se te proporcionara la informacion del pedido actual"
-                     }
+            client = Client.objects.get(pk=request.user.id)
+            item = Item.objects.get(pk=item_id)
+            item_serializer = ItemSerializer(item, many=False)
+            restaurant_id = item.restaurant.user.id
+            restaurant = Restaurant.objects.get(pk=restaurant_id)
+            try:
+                solicitude = Solicitude.objects.get(status=2, order=current_order)
+                if solicitude is not None:
+                    dealer = solicitude.dealer
+                    parameters = {
+                        'error': True,
+                        'error_type': "ya tienes una orden existente, se te proporcionara la informacion del pedido "
+                                      "actual",
+                        'restaurant': {'latitude': restaurant.latitude, 'longitude': restaurant.longitude},
+                        'client': {'latitude': client.latitude, 'longitude': client.longitude},
+                        'dealer': {'latitude': dealer.latitude, 'longitude': dealer.longitude},
+                        'item': item_serializer.data,
+                    }
+                    params.update(parameters)
+            except:
+                parameters = {
+                    'error': True,
+                    'error_type': "ya tienes una orden existente, se te proporcionara la informacion del pedido "
+                                  "actual",
+                    'restaurant': {'latitude': restaurant.latitude, 'longitude': restaurant.longitude},
+                    'client': {'latitude': client.latitude, 'longitude': client.longitude},
+                    'dealer': {'latitude': restaurant.latitude, 'longitude': restaurant.longitude},
+                    'item': item_serializer.data,
+                }
+                params.update(parameters)
             return render(request, 'active_purchase.html', prepare_parameters(request), params)
     except:
         client = Client.objects.get(pk=request.user.id)
-        client_serializer = ClientSerializer(client, many=False)
         item = Item.objects.get(pk=item_id)
-        item_serializer = ItemSerializer(item,many=False)
+        item_serializer = ItemSerializer(item, many=False)
         restaurant_id = item.restaurant.user.id
         restaurant = Restaurant.objects.get(pk=restaurant_id)
         restaurant_serializer = RestaurantSerializer(restaurant, many=False)
         if client.latitude is not None:
             order = Order.objects.create(client=client, restaurant=restaurant, item=item)
-            order_serializer = OrderSerializer(order, many=False)
-            order.save()
-            params = {
-                'restaurant': restaurant_serializer.data,
-                'client': client_serializer.data,
+            parameters = {
+                'restaurant': {'latitude': restaurant.latitude, 'longitude': restaurant.longitude},
+                'client': {'latitude': client.latitude, 'longitude': client.longitude},
                 'item': item_serializer.data,
                 'error': False,
             }
+            params.update(parameters)
         else:
-            params = {'error': True,
-                      'error_type': "usuario no tiene latitud ni longitud"}
-        return render(request, 'active_purchase.html', prepare_parameters(request), params)
+            parameters = {'error': True,
+                          'error_type': "usuario no tiene latitud ni longitud"}
+            params.update(parameters)
+        return render(request, 'active_purchase.html', params)
 
 
 @login_required

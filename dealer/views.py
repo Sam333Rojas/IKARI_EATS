@@ -16,19 +16,18 @@ def current(request, order_id):
     if request.method == 'GET':
         try:
             order = Order.objects.get(pk=order_id)
-            restaurant_serializer = RestaurantSerializer(order.restaurant, many=False)
-            client_serializer = ClientSerializer(order.client, many=False)
+            restaurant = order.restaurant
+            client = order.client
             order_parameters = {
                 'order': {
                     'id': order.id,
-                    'restaurant': restaurant_serializer.data,
-                    'client': client_serializer.data
+                    'restaurant': {'latitude': restaurant.latitude, 'longitude': restaurant.longitude},
+                    'client': {'latitude': client.latitude, 'longitude': client.longitude},
                 }
             }
             dealer = Dealer.objects.get(pk=request.user.id)
-            dealer_serializer = DealerSerializer(dealer, many=False)
             dealer_parameters = {
-                'dealer': dealer_serializer.data, 
+                'dealer': {'latitude': dealer.latitude, 'longitude': dealer.longitude},
             }
         except Order.DoesNotExist:
             raise Http404()
@@ -39,8 +38,9 @@ def current(request, order_id):
     else:
         order = Order.objects.get(pk=order_id)
         time = request.POST.get('time')
-        solicitude = Solicitude.objects.create(order=order, time=time)
+        Solicitude.objects.create(order=order, time=time, status=2)
         return HttpResponse(200)
+
 
 """
 @login_required

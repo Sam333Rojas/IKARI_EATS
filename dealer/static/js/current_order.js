@@ -1,11 +1,3 @@
-//Dealer
-/*
-calcula la ruta entre el y el restaurante
-envia el tiempo correspondiente
-si es aceptaddo traza la ruta entre el y el restaurante
-si es aceptado cambia su estatus y lo envia por post
- */
-
 var map;
 var time;
 function initMap() {
@@ -13,7 +5,6 @@ function initMap() {
         center: {lat: dealer_lat, lng: dealer_log},
         zoom: 10
     });
-    navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
     var restaurant_marker = new google.maps.Marker({
         position: {lat: res_lat, lng: res_log},
         map: map,
@@ -29,16 +20,14 @@ function initMap() {
     service.getDistanceMatrix(
         {
             origins: [{lat: dealer_lat, lng: dealer_log}],
-            // origins: [{lat: 4.5981, lng: -74.0760}],
             destinations: [{lat: res_lat, lng: res_log}],
-            // destinations: [{lat: 4.5981, lng: -75.0760}, {lat: 4.4521, lng: -74.0760}, {lat: 5.5981, lng: -69.0760}],
-            travelMode: 'BIKING',
+            travelMode: 'BICYCLING',
             avoidHighways: false,
             avoidTolls: false,
         }, callbackMatrix);
 }
 var callbackMatrix = function (response, status) {
-    var min = response.rows[0].elements[0].duration.value, minIndex = 0;
+    var min = response.rows[0].elements[0].duration.value, minIndex = 0;c
 
     for (var i = 1; i < response.rows[0].elements.length; i++) {
         if (min > response.rows[0].elements[i].duration.value) {

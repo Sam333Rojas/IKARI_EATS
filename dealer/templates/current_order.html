@@ -1,35 +1,44 @@
-{% extends "sales.html" %}
+{% extends "logged_base.html" %}
 {% load static %}
-{% block title %}
-  ACTIVE order
-{% endblock %}
-{% block inner-title %}
-  Current order!
-{% endblock %}
-{% block map %}
-  <div id="map"></div>
-  <span id="time"></span>
-{% endblock %}
-{% block buttons %}
-  <button class="btn btn-danger" id="cancel-solicitude" hidden>Cancelar</button>
-{% endblock %}
-{% block additional_js %}
-  <script>
-      var res_lat = {{ order.restaurant.latitude }};
-      var res_log = {{ order.restaurant.longitude }};
+{% block inner-content %}
+    <script>
+        var res_lat = {{ order.restaurant.latitude }};
+        var res_log = {{ order.restaurant.longitude }};
 
-      var dealer_lat = {{ dealer.latitude }};
-      var dealer_log = {{ dealer.longuitude }};
-  </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqxIL3Ii8OAx3f8FdtDw5UjW3AM6sYDyQ&callback=initMap"
-          async defer></script>
-  {% csrf_token %}
-  <script type="text/javascript">
-      // using jQuery
-      var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-  </script>
-  <script src="{% static "js/current_order.js" %}"></script>
+        var dealer_lat = {{ dealer.latitude }};
+        var dealer_log = {{ dealer.longitude }};
+    </script>
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <div style="height: 20%;">
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                Hola el error es:{{ error_type }}
+            </div>
+        {% endif %}</div>
+    <div id="map"></div>
+    <div style="height: 20%;"></div>
 {% endblock %}
-{% block additional_css %}
-  <link rel="stylesheet" href="{% static "css/current_order.css" %}">
+
+{% block additional_js %}
+    {% csrf_token %}
+    <script type="text/javascript">
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqxIL3Ii8OAx3f8FdtDw5UjW3AM6sYDyQ&callback=initMap"
+            async defer></script>
+    <script src="{% static "js/current_order.js" %}"></script>
 {% endblock %}
+

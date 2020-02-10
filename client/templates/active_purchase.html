@@ -1,30 +1,6 @@
-{% extends "sales.html" %}
+{% extends "logged_base.html" %}
 {% load static %}
-
-{% block title %}
-    ACTIVE Purchases
-{% endblock %}
-
-{% block inner-title %}
-    In this moment purchase!
-{% endblock %}
-
-{% block others %}
-    {% if error %}
-        <div class="alert alert-danger" role="alert">Hola
-            {{ error_type }}
-        </div>
-    {% endif %}
-{% endblock %}
-
-{% block map %}
-    <div id="map"></div>
-{% endblock %}
-
-{% block buttons %}
-{% endblock %}
-
-{% block additional_js %}
+{% block inner-content %}
     <script>
         {% if dealer.latitude is None %}
             var dealer_lat = {{ client.latitude }};
@@ -36,11 +12,30 @@
 
         var res_lat = {{restaurant.latitude }};
         var res_log = {{restaurant.longitude }};
-
         var client_lat = {{ client.latitude }};
         var client_log = {{ client.longitude }};
-
     </script>
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 50%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <div style="height: 20%;">
+      </div>
+    <div id="map"></div>
+    <div style="height: 20%;"></div>
+{% endblock %}
+
+{% block additional_js %}
     {% csrf_token %}
     <script type="text/javascript">
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();

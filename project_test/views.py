@@ -153,3 +153,7 @@ def map_test(request):
                    'longitude': -74.075145}
     }
     return render(request, 'map_test.html', results)
+
+
+def geoposition_test(request):
+    return render(request, 'geoposition_test.html')
