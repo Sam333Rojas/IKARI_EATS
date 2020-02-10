@@ -16,7 +16,7 @@ $(function () {
         startPos = position;
         console.log(position);
         client_lat = position.coords.latitude;
-        client_lat = position.coords.longitude;
+        client_log = position.coords.longitude;
         console.log("4");
         console.log(client_lat, client_log);
         $.post({

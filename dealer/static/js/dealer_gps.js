@@ -12,7 +12,7 @@ $(function () {
         startPos = position;
         console.log(position);
         dealer_lat = position.coords.latitude;
-        dealer_lat = position.coords.longitude;
+        dealer_log = position.coords.longitude;
         $.post({
             data: {'lat': dealer_lat, 'log': dealer_log},
             url: '',
