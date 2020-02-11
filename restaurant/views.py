@@ -58,9 +58,11 @@ def active_sales(request):
             },
             'client': {
                 'id': order.client.user.id,
+                'name': order.client.user.first_name,
                 'latitude': order.client.latitude,
                 'longitude': order.client.longitude,
-            }
+            },
+            'item':{'name':order.item.name}
         } for order in orders]
         orders_ready_data = [{
             'id': order.id,
@@ -71,15 +73,18 @@ def active_sales(request):
             },
             'client': {
                 'id': order.client.user.id,
+                'name': order.client.user.first_name,
                 'latitude': order.client.latitude,
                 'longitude': order.client.longitude,
-            }
+            },
+            'item':{'name':order.item.name}
         } for order in orders_ready]
         solicitude_data = [{
             'id': solicitude.id,
-            'status': solicitude.status,
             'order': {
                 'id': solicitude.order.id,
+                'creation_date': solicitude.order.creation_date,
+                'status': solicitude.order.status,
                 'restaurant': {
                     'id': solicitude.order.restaurant.user.id,
                     'latitude': solicitude.order.restaurant.latitude,
@@ -87,6 +92,7 @@ def active_sales(request):
                 },
                 'client': {
                     'id': solicitude.order.client.user.id,
+                    'name': solicitude.order.client.user.first_name,
                     'latitude': solicitude.order.client.latitude,
                     'longitude': solicitude.order.client.longitude,
                 },
@@ -117,6 +123,9 @@ def active_sales(request):
             solicitude = Solicitude.objects.get(pk=request.POST.get('solicitude_id'))
             solicitude.status = 2
             solicitude.save()
+            dealer = solicitude.dealer
+            dealer.status = 2
+            dealer.save()
             return HttpResponse(200)
         except:
             return HttpResponse(400)
@@ -124,8 +133,20 @@ def active_sales(request):
 
 @login_required
 def old_sales(request):
-    return render(request, 'restaurant_sales.html', prepare_parameters(request))
-
+    orders = Order.objects.all().filter(restaurant_id=request.user.id).order_by('-creation_date')
+    orders_data = [{
+        'id': order.id,
+        'client': {
+            'name': order.client.user.first_name,
+        },
+        'creation_date': order.creation_date,
+        'item': order.item.name
+    } for order in orders]
+    params = prepare_parameters(request)
+    params.update({
+        'orders': orders_data,
+    })
+    return render(request, 'client_sales.html', params)
 
 def restaurant_sign_in_view(request):
     restaurant_form = RestaurantForm(request.POST or None)

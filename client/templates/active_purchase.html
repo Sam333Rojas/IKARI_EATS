@@ -53,8 +53,7 @@
             {% endif %}
             <h3><strong>Item :</strong> {{ item.name }}</h3>
             <h3><strong>Restaurant:</strong> {{ restaurant.name }}</h3>
-            <h3><strong>Waiting period:</strong> </h3>
-
+             <a href="{% url "finish" order_id=order.id %}" class="btn btn-primary">Finish</a>
         </div>
         <br>
     </div>

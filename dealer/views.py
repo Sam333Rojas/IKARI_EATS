@@ -13,46 +13,78 @@ from restaurant.models import Item, RestaurantSerializer
 
 @login_required
 def current(request, order_id):
-    if request.method == 'GET':
-        try:
-            order = Order.objects.get(pk=order_id)
+    try:
+        current_sol = Solicitude.objects.get(dealer_id=request.user.id,status=2)
+        if current_sol is not None:
+            order = Solicitude.order
             restaurant = order.restaurant
             client = order.client
             order_parameters = {
-                'order': {
-                    'id': order.id,
-                    'status': order.status,
-                    'restaurant': {
-                        'latitude': restaurant.latitude,
-                        'longitude': restaurant.longitude,
-                        'address': restaurant.address
-                    },
-                    'client': {
-                        'latitude': client.latitude,
-                        'longitude': client.longitude
-                    },
-                    'item': {
-                        'name': order.item.name
+                    'order': {
+                        'id': order.id,
+                        'status': order.status,
+                        'restaurant': {
+                            'latitude': restaurant.latitude,
+                            'longitude': restaurant.longitude,
+                            'address': restaurant.address
+                        },
+                        'client': {
+                            'latitude': client.latitude,
+                            'longitude': client.longitude
+                        },
+                        'item': {
+                            'name': order.item.name
+                        }
                     }
-                }
             }
             dealer = Dealer.objects.get(pk=request.user.id)
             dealer_parameters = {
-                'dealer': {'latitude': dealer.latitude, 'longitude': dealer.longitude},
+            'dealer': {'latitude': dealer.latitude, 'longitude': dealer.longitude},
             }
-        except Order.DoesNotExist:
-            raise Http404()
-        params = prepare_parameters(request)
-        params.update(order_parameters)
-        params.update(dealer_parameters)
-        return render(request, 'current_order.html', params)
-    else:
-        order = Order.objects.get(pk=order_id)
-        if order.status is not 2:
-            time = request.POST.get('time')
-            Solicitude.objects.create(order=order, time=time, dealer_id=request.user.id)
-        return HttpResponse(200)
-
+            params = prepare_parameters(request)
+            params.update(order_parameters)
+            params.update(dealer_parameters)
+            return render(request, 'current_order.html', params)
+    except:
+        if request.method == 'GET':
+            try:
+                order = Order.objects.get(pk=order_id)
+                restaurant = order.restaurant
+                client = order.client
+                order_parameters = {
+                    'order': {
+                        'id': order.id,
+                        'status': order.status,
+                        'restaurant': {
+                            'latitude': restaurant.latitude,
+                            'longitude': restaurant.longitude,
+                            'address': restaurant.address
+                        },
+                        'client': {
+                            'latitude': client.latitude,
+                            'longitude': client.longitude
+                        },
+                        'item': {
+                            'name': order.item.name
+                        }
+                    }
+                }
+                dealer = Dealer.objects.get(pk=request.user.id)
+                dealer_parameters = {
+                    'dealer': {'latitude': dealer.latitude, 'longitude': dealer.longitude},
+                }
+            except Order.DoesNotExist:
+                raise Http404()
+            params = prepare_parameters(request)
+            params.update(order_parameters)
+            params.update(dealer_parameters)
+            return render(request, 'current_order.html', params)
+        else:
+            order = Order.objects.get(pk=order_id)
+            if order.status is not 2:
+                time = request.POST.get('time')
+                Solicitude.objects.create(order=order, time=time, dealer_id=request.user.id)
+            return HttpResponse(200)
 
 def dealer_sign_in_view(request):
     dealer_form = DealerForm(request.POST or None)

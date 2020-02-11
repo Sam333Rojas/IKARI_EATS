@@ -2,7 +2,6 @@
 {% load static %}
 {% block inner-content %}
     {% for solicitude in solicitudes %}
-        {% if solicitude.status == 2 %}
             <div class="row">
                 <div class="col-md-7">
                     <a href="#">
@@ -10,22 +9,17 @@
                     </a>
                 </div>
                 <div class="col-md-5">
-                    <h3>{{ solicitude.name }}</h3>
-                    <p>{{ solicitude.order.restaurant.name }}</p>
-                    <p>{{ solicitude.order.item.name }}</p>
-                    <p>{{ solicitude.dealer.name }}</p>
-                    <!--
-                    <label for="sel1">Status:</label>
-                    <select class="form-control" id="sel1">
-                            <option>1</option
-                            <option>4</option>
-                        </select>
-                        -->
+                    <h3><strong>Order Id: </strong>{{ solicitude.order.id }}</h3>
+                    <p><strong>Client Name :</strong>{{ solicitude.order.client.name }}</p>
+                    <p><strong>Item Name: </strong>{{ solicitude.order.item.name }}</p>
+                    <p><strong>Deliverer Name: </strong>{{ solicitude.dealer.name }}</p>
+                    <p><strong>Order Status: </strong>{{ solicitude.order.status }}</p>
+                    <p><strong>Order Creation Date :</strong> {{ solicitude.order.creation_date }}</p>
+
                     <a href="#" class="btn btn-primary">Cancel</a>
                 </div>
             </div>
             <hr>
-        {% endif %}
     {% endfor %}
     {% comment %}
     # aqui se reciben los candidatos a dealer

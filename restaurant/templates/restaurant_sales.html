@@ -1,7 +1,25 @@
-{% extends "sales.html" %}
-{% block title %}
-    Sales
-{% endblock %}
-{% block inner-title %}
-    Our Sales
+{% extends "logged_base.html" %}
+{% block inner-content %}
+ <h2>My purchases</h2>
+    <div class="container">
+    {% for order in orders %}
+        <hr>
+        <div class="row">
+
+            <div class="col-md-7">
+                <a href="#">
+                    <img class="img-fluid rounded mb-3 mb-md-0" src="http://placehold.it/700x300" alt="">
+                </a>
+            </div>
+            <div class="col-md-5">
+                <h2>Order id: {{ order.id }}</h2>
+                <h3><strong>Client Name :</strong>{{ order.client.name }}</h3>
+                <p> <strong>Item Name: </strong>{{ order.item }}</p>
+                <p><strong>Order Creation Date :</strong> {{ order.creation_date }}</p>
+            </div>
+        </div>
+
+    {% endfor %}
+    <hr>
+    </div>
 {% endblock %}

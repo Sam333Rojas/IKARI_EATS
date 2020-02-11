@@ -16,7 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from client.views import search_view, active_view, c_sales_view, confirmation_view, restaurant_view, client_sign_in_view
+from client.views import search_view, active_view, c_sales_view, confirmation_view, restaurant_view, \
+    client_sign_in_view, finish
 from core.views import test_template, redirect_home, logout_view, home_view
 from authentication.views import login
 from dealer.views import current, dealer_sign_in_view
@@ -32,14 +33,15 @@ urlpatterns = [
     path('home/', home_view, name='home'),
     path('logout/', logout_view, name='logout'),
     path('client/buy/<int:item_id>', active_view, name='active'),
-    path('client_sales/', c_sales_view),
+    path('client/finish/<int:order_id>', finish, name='finish'),
+    path('client_sales/', c_sales_view , name="my_purchases"),
     path('confirmation/', confirmation_view),
     path('restaurant/<int:restaurant_id>', restaurant_view, name='restaurant'),
     path('dealer/order/<int:order_id>', current, name='current'),
     path('items/', items_view),
     path('item/<int:item_id>/', item_view, name='item'),
     path('active_sales/', active_sales, name="active_sales"),
-    path('restaurant_sales/', old_sales),
+    path('restaurant_sales/', old_sales,name='restaurant_sales'),
     path('test/linked_list/<int:n>', linked_list_test),
     path('test/python_list/<int:n>', python_list_test),
     path('test/heap_test/', heap_test),

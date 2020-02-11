@@ -39,7 +39,7 @@ def active_view(request, item_id):
         current_order = Order.objects.get(status__in=[1, 2], client__user_id=request.user.id)
         if current_order is not None:
             client = Client.objects.get(pk=request.user.id)
-            item = Item.objects.get(pk=item_id)
+            item = current_order.item
             item_serializer = ItemSerializer(item, many=False)
             restaurant_id = item.restaurant.user.id
             restaurant = Restaurant.objects.get(pk=restaurant_id)
@@ -50,7 +50,7 @@ def active_view(request, item_id):
                     parameters = {
                         'error': True,
                         'error_type': "ya tienes una orden existente, se te proporcionara la informacion del pedido "
-                                      "actual",
+                                      "actual y cuentas con repartidor!",
                         'order': {
                             'id': current_order.id,
                             'status': current_order.status
@@ -69,6 +69,7 @@ def active_view(request, item_id):
                             'latitude': dealer.latitude,
                             'longitude': dealer.longitude
                         },
+                        'item': item_serializer.data,
                     }
                     params.update(parameters)
                     return render(request, 'active_purchase.html', params)
@@ -76,7 +77,7 @@ def active_view(request, item_id):
                 parameters = {
                     'error': True,
                     'error_type': "ya tienes una orden existente, se te proporcionara la informacion del pedido "
-                                  "actual",
+                                  "actual, no ha sido asignado deliverer aun",
                     'order': {
                         'id': current_order.id,
                         'status': current_order.status
@@ -139,7 +140,20 @@ def active_view(request, item_id):
 
 @login_required
 def c_sales_view(request):
-    return render(request, 'client_sales.html', prepare_parameters(request))
+    orders = Order.objects.all().filter(client_id=request.user.id).order_by('creation_date')
+    orders_data = [{
+        'id': order.id,
+        'restaurant': {
+            'name': order.restaurant.user.first_name,
+        },
+        'creation_date': order.creation_date,
+        'item': order.item.name
+    } for order in orders]
+    params = prepare_parameters(request)
+    params.update({
+        'orders': orders_data,
+    })
+    return render(request, 'client_sales.html', params)
 
 
 @login_required
@@ -189,3 +203,17 @@ def client_sign_in_view(request):
             pass
     else:
         return render(request, 'reg_client.html', {'form': client_form})
+
+@login_required()
+def finish(request,order_id):
+    order = Order.objects.get(pk=order_id)
+    order.status = 3
+    order.save()
+    try:
+        sol = Solicitude.objects.get(order_id= order.id,status=2)
+        if sol is not None:
+            sol.status = 3
+            sol.save()
+            return HttpResponseRedirect('/home/')
+    except:
+        return HttpResponseRedirect('/home/')

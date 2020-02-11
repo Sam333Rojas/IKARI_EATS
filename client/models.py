@@ -35,6 +35,7 @@ class Order(models.Model):
     # dealer = models.ForeignKey(Dealer, on_delete=None)
     item = models.ForeignKey(Item, on_delete=None)
     status = models.IntegerField(default=1)
+    creation_date = models.DateTimeField(auto_now=True)
 
 
 class OrderSerializer(serializers.ModelSerializer):

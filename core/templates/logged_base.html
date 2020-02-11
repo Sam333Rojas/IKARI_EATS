@@ -18,12 +18,16 @@
                     </li>
                     {% if user_group == 'client' %}
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="#">My purchases</a>
+                            <a class="nav-link text-light" href="{% url "my_purchases" %}">My purchases</a>
                         </li>
                     {% elif user_group == 'restaurant' %}
                         <li class="nav-item">
                             <a class="nav-link text-light" href="{% url "active_sales" %}">My sales</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="{% url "restaurant_sales" %}">Old sales</a>
+                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link text-light" href="{% url "reg_item" %}">Add Product</a>
                         </li>
