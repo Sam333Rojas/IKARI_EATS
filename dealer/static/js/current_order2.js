@@ -1,21 +1,20 @@
 var map;
-
+var time;
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: client_lat, lng: client_log},
+        center: {lat: dealer_lat, lng: dealer_log},
         zoom: 10
     });
     var service = new google.maps.DistanceMatrixService();
     service.getDistanceMatrix(
         {
-            origins: [{lat: client_lat, lng: client_log}],
-            destinations: [{lat: dealer_lat, lng: dealer_log}],
+            origins: [{lat: dealer_lat, lng: dealer_log}],
+            destinations: [{lat: client_lat, lng: client_log}],
             travelMode: 'DRIVING',
             avoidHighways: false,
             avoidTolls: false
         }, callbackMatrix);
 }
-
 var callbackMatrix = function (response, status) {
     console.log(response);
     var min = response.rows[0].elements[0].duration.value, minIndex = 0;
@@ -26,11 +25,9 @@ var callbackMatrix = function (response, status) {
             minIndex = i;
         }
     }
-
-    time = response.rows[0].elements[minIndex].duration.value;
     calculateAndDisplayRoute({
-        lat: client_lat,
-        lng: client_log
+        lat: dealer_lat,
+        lng: dealer_log
     }, response.destinationAddresses[minIndex]);
 };
 

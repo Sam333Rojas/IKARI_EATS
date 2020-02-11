@@ -5,17 +5,6 @@ function initMap() {
         center: {lat: dealer_lat, lng: dealer_log},
         zoom: 10
     });
-    var restaurant_marker = new google.maps.Marker({
-        position: {lat: res_lat, lng: res_log},
-        map: map,
-        title: 'Restaurante'
-    });
-    var dealer_marker = new google.maps.Marker({
-        position: {lat: dealer_lat, lng: -dealer_log},
-        map: map,
-        title: 'Deliverer'
-    });
-
     var service = new google.maps.DistanceMatrixService();
     service.getDistanceMatrix(
         {

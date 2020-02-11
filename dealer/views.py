@@ -21,8 +21,19 @@ def current(request, order_id):
             order_parameters = {
                 'order': {
                     'id': order.id,
-                    'restaurant': {'latitude': restaurant.latitude, 'longitude': restaurant.longitude},
-                    'client': {'latitude': client.latitude, 'longitude': client.longitude},
+                    'status': order.status,
+                    'restaurant': {
+                        'latitude': restaurant.latitude,
+                        'longitude': restaurant.longitude,
+                        'address': restaurant.address
+                    },
+                    'client': {
+                        'latitude': client.latitude,
+                        'longitude': client.longitude
+                    },
+                    'item': {
+                        'name': order.item.name
+                    }
                 }
             }
             dealer = Dealer.objects.get(pk=request.user.id)
@@ -37,35 +48,10 @@ def current(request, order_id):
         return render(request, 'current_order.html', params)
     else:
         order = Order.objects.get(pk=order_id)
-        time = request.POST.get('time')
-        Solicitude.objects.create(order=order, time=time, dealer_id=request.user.id)
+        if order.status is not 2:
+            time = request.POST.get('time')
+            Solicitude.objects.create(order=order, time=time, dealer_id=request.user.id)
         return HttpResponse(200)
-
-
-"""
-@login_required
-def current(request, item_id):
-    try:
-        item = Item.objects.get(pk=item_id)
-        item_parameters = {'item': {
-            'id': item.id,
-            'name': item.name,
-            'description': item.description,
-            'price': item.price,
-            'restaurant_lat': item.restaurant.latitude,
-            'restaurant_log': item.restaurant.longitude,
-        }}
-    except Item.DoesNotExist:
-        raise Http404()
-    params = prepare_parameters(request)
-    params.update(item_parameters)
-    dealers = Dealer.objects.filter()
-    dealers_serializer = DealerSerializer(dealers, many=True)
-    params.update({
-        'dealers': dealers_serializer.data,
-    })
-    return render(request, 'current_order.html', params)
-"""
 
 
 def dealer_sign_in_view(request):

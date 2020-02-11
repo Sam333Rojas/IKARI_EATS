@@ -77,6 +77,7 @@ def home_view(request):
             orders_data = [{
                 'name': order.restaurant.user.first_name,
                 'address': order.restaurant.address,
+                'status': order.status,
                 'id': order.id
             } for order in orders]
             order_params = {

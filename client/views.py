@@ -51,9 +51,24 @@ def active_view(request, item_id):
                         'error': True,
                         'error_type': "ya tienes una orden existente, se te proporcionara la informacion del pedido "
                                       "actual",
-                        'restaurant': {'latitude': restaurant.latitude, 'longitude': restaurant.longitude},
-                        'client': {'latitude': client.latitude, 'longitude': client.longitude},
-                        'dealer': {'latitude': dealer.latitude, 'longitude': dealer.longitude},
+                        'order': {
+                            'id': current_order.id,
+                            'status': current_order.status
+                        },
+
+                        'restaurant': {
+                            'latitude': restaurant.latitude,
+                            'longitude': restaurant.longitude,
+                            'name': restaurant.user.first_name
+                        },
+                        'client': {
+                            'latitude': client.latitude,
+                            'longitude': client.longitude
+                        },
+                        'dealer': {
+                            'latitude': dealer.latitude,
+                            'longitude': dealer.longitude
+                        },
                     }
                     params.update(parameters)
                     return render(request, 'active_purchase.html', params)
@@ -62,9 +77,23 @@ def active_view(request, item_id):
                     'error': True,
                     'error_type': "ya tienes una orden existente, se te proporcionara la informacion del pedido "
                                   "actual",
-                    'restaurant': {'latitude': restaurant.latitude, 'longitude': restaurant.longitude},
-                    'client': {'latitude': client.latitude, 'longitude': client.longitude},
-                    'dealer': {'latitude': restaurant.latitude, 'longitude': restaurant.longitude},
+                    'order': {
+                        'id': current_order.id,
+                        'status': current_order.status
+                    },
+                    'restaurant': {
+                        'latitude': restaurant.latitude,
+                        'longitude': restaurant.longitude,
+                        'name': restaurant.user.first_name
+                    },
+                    'client': {
+                        'latitude': client.latitude,
+                        'longitude': client.longitude
+                    },
+                    'dealer': {
+                        'latitude': restaurant.latitude,
+                        'longitude': restaurant.longitude
+                    },
                     'item': item_serializer.data,
                 }
                 params.update(parameters)
@@ -79,8 +108,23 @@ def active_view(request, item_id):
         if client.latitude is not None:
             order = Order.objects.create(client=client, restaurant=restaurant, item=item)
             parameters = {
-                'restaurant': {'latitude': restaurant.latitude, 'longitude': restaurant.longitude},
-                'client': {'latitude': client.latitude, 'longitude': client.longitude},
+                'order': {
+                    'id': order.id,
+                    'status': order.status
+                },
+                'restaurant': {
+                    'latitude': restaurant.latitude,
+                    'longitude': restaurant.longitude,
+                    'name': restaurant.user.first_name
+                },
+                'client': {
+                    'latitude': client.latitude,
+                    'longitude': client.longitude
+                },
+                'dealer': {
+                    'latitude': restaurant.latitude,
+                    'longitude': restaurant.longitude
+                },
                 'item': item_serializer.data,
                 'error': False,
             }

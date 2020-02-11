@@ -1,16 +1,9 @@
 {% extends "logged_base.html" %}
 {% load static %}
 {% block inner-content %}
-
     <script>
-        {% if dealer.latitude == None %}
-            var dealer_lat = {{restaurant.latitude }};
-            var dealer_log = {{restaurant.longitude }};
-        {% else %}
-            var dealer_lat = {{ dealer.latitude }};
-            var dealer_log = {{ dealer.longitude }};
-        {% endif %}
-
+        var dealer_lat = {{ dealer.latitude }};
+        var dealer_log = {{ dealer.longitude }};
         var res_lat = {{restaurant.latitude }};
         var res_log = {{restaurant.longitude }};
         var client_lat = {{ client.latitude }};
@@ -19,9 +12,14 @@
     <style>
         /* Always set the map height explicitly to define the size of the div
          * element that contains the map. */
-        #map {
-            height: 50%;
+         #map {
+            margin: 20px 0;
+            padding: 0;
+            height: 300px;
+            float: left;
+            width: 100%;
         }
+
 
         /* Optional: Makes the sample page fill the window. */
         html, body {
@@ -30,24 +28,40 @@
             padding: 0;
         }
     </style>
-    <div style="height: 20%;">
-    </div>
     {% if error %}
         <div class="alert alert-danger" role="alert">
-            Hola el error es:{{ error_type }}
+           {{ error_type }}
         </div>
     {% endif %}
-    <h1> latitud dealer : {{ dealer.latitude }}</h1>
-    <h1> latitud restaurant : {{ restaurant.latitude }}</h1>
-    <div id="map"></div>
-    <div style="height: 20%;"></div>
+   <div class="row" style="height: 10%;">
+    </div>
+    <div class="row jumbotron ">
+        <div class="col" style="margin-left: 5%">
+            <div id="map"></div>
+        </div>
+        <div class="col" style="margin-right: 5%">
+            <br>
+            <h2><strong>Order Id :</strong> {{ order.id }}</h2>
+            {% if order.status == 1 %}
+            <div class="alert alert-warning">
+                We're looking for the delivery guy closest to the restaurant you chose
+            </div>
+            {% elif order.status == 2 %}
+            <div class="alert alert-success">
+               Your order has a delivery person
+            </div>
+            {% endif %}
+            <h3><strong>Item :</strong> {{ item.name }}</h3>
+            <h3><strong>Restaurant:</strong> {{ restaurant.name }}</h3>
+            <h3><strong>Waiting period:</strong> </h3>
+
+        </div>
+        <br>
+    </div>
+    <br>
 {% endblock %}
 
 {% block additional_js %}
-    {% csrf_token %}
-    <script type="text/javascript">
-        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqxIL3Ii8OAx3f8FdtDw5UjW3AM6sYDyQ&callback=initMap"
             async defer></script>
     <script src="{% static "js/active_purchase.js" %}"></script>
