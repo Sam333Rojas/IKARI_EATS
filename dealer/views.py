@@ -38,7 +38,7 @@ def current(request, order_id):
     else:
         order = Order.objects.get(pk=order_id)
         time = request.POST.get('time')
-        Solicitude.objects.create(order=order, time=time, status=2)
+        Solicitude.objects.create(order=order, time=time, dealer_id=request.user.id)
         return HttpResponse(200)
 
 

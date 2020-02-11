@@ -22,7 +22,7 @@
                         </li>
                     {% elif user_group == 'restaurant' %}
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="#">My sales</a>
+                            <a class="nav-link text-light" href="{% url "active_sales" %}">My sales</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" href="{% url "reg_item" %}">Add Product</a>

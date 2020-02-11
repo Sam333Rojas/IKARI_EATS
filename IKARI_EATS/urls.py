@@ -38,7 +38,7 @@ urlpatterns = [
     path('dealer/order/<int:order_id>', current, name='current'),
     path('items/', items_view),
     path('item/<int:item_id>/', item_view, name='item'),
-    path('active_sales/', active_sales),
+    path('active_sales/', active_sales, name="active_sales"),
     path('restaurant_sales/', old_sales),
     path('test/linked_list/<int:n>', linked_list_test),
     path('test/python_list/<int:n>', python_list_test),

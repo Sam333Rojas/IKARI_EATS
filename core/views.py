@@ -74,9 +74,13 @@ def home_view(request):
             params = prepare_parameters(request)
             params.update(dealer_params)
             orders = Order.objects.all()
-            orders_serializer = OrderSerializer(orders, many=True)
+            orders_data = [{
+                'name': order.restaurant.user.first_name,
+                'address': order.restaurant.address,
+                'id': order.id
+            } for order in orders]
             order_params = {
-                'orders': orders_serializer.data,
+                'orders': orders_data,
             }
             params.update(order_params)
             return render(request, 'dealer_home.html', params)

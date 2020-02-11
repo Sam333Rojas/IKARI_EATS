@@ -36,7 +36,7 @@ def search_view(request):
 def active_view(request, item_id):
     params = prepare_parameters(request)
     try:
-        current_order = Order.objects.get(status=1, client__user_id=request.user.id)
+        current_order = Order.objects.get(status__in=[1, 2], client__user_id=request.user.id)
         if current_order is not None:
             client = Client.objects.get(pk=request.user.id)
             item = Item.objects.get(pk=item_id)
@@ -54,9 +54,9 @@ def active_view(request, item_id):
                         'restaurant': {'latitude': restaurant.latitude, 'longitude': restaurant.longitude},
                         'client': {'latitude': client.latitude, 'longitude': client.longitude},
                         'dealer': {'latitude': dealer.latitude, 'longitude': dealer.longitude},
-                        'item': item_serializer.data,
                     }
                     params.update(parameters)
+                    return render(request, 'active_purchase.html', params)
             except:
                 parameters = {
                     'error': True,
@@ -68,7 +68,7 @@ def active_view(request, item_id):
                     'item': item_serializer.data,
                 }
                 params.update(parameters)
-            return render(request, 'active_purchase.html', prepare_parameters(request), params)
+                return render(request, 'active_purchase.html', params)
     except:
         client = Client.objects.get(pk=request.user.id)
         item = Item.objects.get(pk=item_id)
@@ -85,11 +85,12 @@ def active_view(request, item_id):
                 'error': False,
             }
             params.update(parameters)
+            return render(request, 'active_purchase.html', params)
         else:
             parameters = {'error': True,
                           'error_type': "usuario no tiene latitud ni longitud"}
             params.update(parameters)
-        return render(request, 'active_purchase.html', params)
+            return render(request, 'active_purchase.html', params)
 
 
 @login_required

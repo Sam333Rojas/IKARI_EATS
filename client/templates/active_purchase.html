@@ -1,13 +1,14 @@
 {% extends "logged_base.html" %}
 {% load static %}
 {% block inner-content %}
+
     <script>
-        {% if dealer.latitude is None %}
-            var dealer_lat = {{ client.latitude }};
-            var dealer_log ={{ client.longitude }};
+        {% if dealer.latitude == None %}
+            var dealer_lat = {{restaurant.latitude }};
+            var dealer_log = {{restaurant.longitude }};
         {% else %}
-            var dealer_lat = {{ solicitude.dealer.latitude }};
-            var dealer_log = {{ solicitude.dealer.longitude }};
+            var dealer_lat = {{ dealer.latitude }};
+            var dealer_log = {{ dealer.longitude }};
         {% endif %}
 
         var res_lat = {{restaurant.latitude }};
@@ -30,7 +31,14 @@
         }
     </style>
     <div style="height: 20%;">
-      </div>
+    </div>
+    {% if error %}
+        <div class="alert alert-danger" role="alert">
+            Hola el error es:{{ error_type }}
+        </div>
+    {% endif %}
+    <h1> latitud dealer : {{ dealer.latitude }}</h1>
+    <h1> latitud restaurant : {{ restaurant.latitude }}</h1>
     <div id="map"></div>
     <div style="height: 20%;"></div>
 {% endblock %}

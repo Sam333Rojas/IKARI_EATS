@@ -13,8 +13,8 @@
                     <img class="card-img-top" src="http://placehold.it/500x325" alt="">
                     <div class="card-body">
                         <h5 class="card-title">Order id : {{ order.id }}</h5>
-                        <p class="card-text">Nombre del restaruante : {{ order.restaurant.name }}</p>
-                        <p class="card-text">Direccion del restaurante: {{ order.restaruant.address }}</p>
+                        <p class="card-text">Nombre del restaruante : {{ order.name }}</p>
+                        <p class="card-text">Direccion del restaurante: {{ order.address }}</p>
                     </div>
                     <div class="card-footer">
                         <a href="{% url "current" order_id=order.id %}" class="btn btn-primary">Accept</a>

@@ -1,30 +1,33 @@
 {% extends "logged_base.html" %}
+{% load static %}
 {% block inner-content %}
-  {% comment %}
-     #ordenes activas
-     {% for order in orders %}
-    <div class="row">
-        <div class="col-md-7">
-            <a href="#">
-                <img class="img-fluid rounded mb-3 mb-md-0" src="http://placehold.it/700x300" alt="">
-            </a>
-        </div>
-        <div class="col-md-5">
-            <h3>Order One</h3>
-            <p>Description.</p>
-            <label for="sel1">Status:</label>
-            <select class="form-control" id="sel1">
-                <option>1</option
-                <option>4</option>
-            </select>
-            <a href="#" class="btn btn-primary">Cancel</a>
-        </div>
-    </div>
-    <hr>
+    {% for solicitude in solicitudes %}
+        {% if solicitude.status == 2 %}
+            <div class="row">
+                <div class="col-md-7">
+                    <a href="#">
+                        <img class="img-fluid rounded mb-3 mb-md-0" src="http://placehold.it/700x300" alt="">
+                    </a>
+                </div>
+                <div class="col-md-5">
+                    <h3>{{ solicitude.name }}</h3>
+                    <p>{{ solicitude.order.restaurant.name }}</p>
+                    <p>{{ solicitude.order.item.name }}</p>
+                    <p>{{ solicitude.dealer.name }}</p>
+                    <!--
+                    <label for="sel1">Status:</label>
+                    <select class="form-control" id="sel1">
+                            <option>1</option
+                            <option>4</option>
+                        </select>
+                        -->
+                    <a href="#" class="btn btn-primary">Cancel</a>
+                </div>
+            </div>
+            <hr>
+        {% endif %}
     {% endfor %}
-    {% endcomment %}
-
-  {% comment %}
+    {% comment %}
     # aqui se reciben los candidatos a dealer
     {% for solicitude in solicitudes %}
        #agrupar por order_id
@@ -35,54 +38,59 @@
        {% endfor %}
     {% endfor %}
     {% endcomment %}
-
-
 {% endblock %}
 
 {% block additional_js %}
-  <script src="{% static "js/min_heap.js" %}"></script>
-  <script>
-      var orders = [];
-      var orders_winner = [];
-      {% for solicitude in solicitudes %}
-          if (orders[{{ solicitude.order.id }}]) {
-              orders[{{ solicitude.order.id }}].push({'id': {{ solicitude.id }}, 'time': {{ solicitude.time }}})
-          } else {
-              orders[{{ solicitude.order.id }}] = [{'id': {{ solicitude.id }}, 'time': {{ solicitude.time }}}]
-          }
-      {% endfor %}
+    {% csrf_token %}
+    <script type="text/javascript">
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    </script>
+    <script src="{% static "js/min_heap.js" %}"></script>
+    <script>
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
 
-      for (var i = 0; i <= orders.length; i++) {
-          var order = orders[i];
-          if (!order) {
-              continue;
-          }
-          var queue = new PriorityQueue('time', PriorityQueue.MIN_HEAP);
-          for(var i in order){
-              if (order.hasOwnProperty(i)) {
-                var solicitude = order[i]
-                    queue.insert(solicitude);
+        var orders = [];
+        var orders_winner = [];
+        {% for solicitude in solicitudes %}
+            if (orders[{{ solicitude.order.id }}]) {
+                orders[{{ solicitude.order.id }}].push({'id': {{ solicitude.id }}, 'time': {{ solicitude.time }}})
+            } else {
+                orders[{{ solicitude.order.id }}] = [{'id': {{ solicitude.id }}, 'time': {{ solicitude.time }}}]
             }
-          }
-          /*
-          for (var solicitude of order) {
-              queue.insert(solicitude);
-          }
-           */
-          orders_winner[i] = queue.getHighestPriorityElement();
-          console.log(orders_winner[i])
-          $.post({
-              data: {'order_id': i, 'solicitude_id': orders_winner[i]['id']},
-              url: '',
-              beforeSend: function (xhr, settings) {
-                  if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                      xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                  }
-              },
-              success: function () {
-                  console.log('bien!');
-              }
-          });
-      }
-  </script>
+        {% endfor %}
+        console.log(orders)
+
+        for (var i = 0; i <= orders.length; i++) {
+            var order = orders[i];
+            if (!order) {
+                continue;
+            }
+            console.log(i);
+            var queue = new PriorityQueue('time', PriorityQueue.MIN_HEAP);
+            for (var sol in order) {
+                if (order.hasOwnProperty(sol)) {
+                    var solicitude = order[sol];
+                    queue.insert(solicitude);
+                }
+            }
+
+            orders_winner[i] = queue.getHighestPriorityElement();
+            console.log(orders_winner[i]);
+            $.post({
+                data: {'order_id': i, 'solicitude_id': orders_winner[i]['id']},
+                url: '',
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                },
+                success: function () {
+                    console.log('bien!');
+                }
+            });
+        }
+    </script>
 {% endblock %}

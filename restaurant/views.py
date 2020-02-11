@@ -47,26 +47,76 @@ def active_sales(request):
                         WHERE restaurant_id={}
                        );
         """.format(request.user.id))
-        solicitude_serializer = SolicitudeSerializer(sol, many=True)
-        # que el dealer no sea nulo en las orders
-        orders = Order.objects.filter(restaurant=request.user, status=1)
-        orders_ready = Order.objects.filter(restaurant=request.user, status=2)
-        orders_serializer = OrderSerializer(orders, many=True)
-        orders_ready_serializer = OrderSerializer(orders_ready, many=True)
+        orders = Order.objects.filter(restaurant_id=request.user.id, status=1)
+        orders_ready = Order.objects.filter(restaurant_id=request.user.id, status=2)
+        orders_data = [{
+            'id': order.id,
+            'restaurant': {
+                'id': order.restaurant.user.id,
+                'latitude': order.restaurant.latitude,
+                'longitude': order.restaurant.longitude,
+            },
+            'client': {
+                'id': order.client.user.id,
+                'latitude': order.client.latitude,
+                'longitude': order.client.longitude,
+            }
+        } for order in orders]
+        orders_ready_data = [{
+            'id': order.id,
+            'restaurant': {
+                'id': order.restaurant.user.id,
+                'latitude': order.restaurant.latitude,
+                'longitude': order.restaurant.longitude,
+            },
+            'client': {
+                'id': order.client.user.id,
+                'latitude': order.client.latitude,
+                'longitude': order.client.longitude,
+            }
+        } for order in orders_ready]
+        solicitude_data = [{
+            'id': solicitude.id,
+            'status': solicitude.status,
+            'order': {
+                'id': solicitude.order.id,
+                'restaurant': {
+                    'id': solicitude.order.restaurant.user.id,
+                    'latitude': solicitude.order.restaurant.latitude,
+                    'longitude': solicitude.order.restaurant.longitude,
+                },
+                'client': {
+                    'id': solicitude.order.client.user.id,
+                    'latitude': solicitude.order.client.latitude,
+                    'longitude': solicitude.order.client.longitude,
+                },
+                'item':{
+                    'name': solicitude.order.item.name
+                }
+            },
+            'dealer': {
+                'id': solicitude.dealer.user.id,
+                'name': solicitude.dealer.user.first_name,
+                'latitude': solicitude.dealer.latitude,
+                'longitude': solicitude.dealer.longitude,
+            },
+            'time': solicitude.time
+        } for solicitude in sol]
         params = prepare_parameters(request)
         params.update({
-            'solicitudes': solicitude_serializer.data,
-            'orders': orders_serializer.data,
-            'orders_ready': orders_ready_serializer.data,
+            'solicitudes': solicitude_data,
+            'orders': orders_data,
+            'orders_ready': orders_ready_data,
         })
         return render(request, 'active_sales.html', params)
     else:
         try:
             order = Order.objects.get(pk=request.POST.get('order_id'))
-            solicitude = Solicitude.objects.get(pk=request.POST.get('solicitude_id'))
-            solicitude.status = 2
             order.status = 2
             order.save()
+            solicitude = Solicitude.objects.get(pk=request.POST.get('solicitude_id'))
+            solicitude.status = 2
+            solicitude.save()
             return HttpResponse(200)
         except:
             return HttpResponse(400)

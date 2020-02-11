@@ -21,13 +21,14 @@ function initMap() {
         {
             origins: [{lat: dealer_lat, lng: dealer_log}],
             destinations: [{lat: res_lat, lng: res_log}],
-            travelMode: 'BICYCLING',
+            travelMode: 'DRIVING',
             avoidHighways: false,
-            avoidTolls: false,
+            avoidTolls: false
         }, callbackMatrix);
 }
 var callbackMatrix = function (response, status) {
-    var min = response.rows[0].elements[0].duration.value, minIndex = 0;c
+    console.log(response);
+    var min = response.rows[0].elements[0].duration.value, minIndex = 0;
 
     for (var i = 1; i < response.rows[0].elements.length; i++) {
         if (min > response.rows[0].elements[i].duration.value) {
@@ -38,7 +39,7 @@ var callbackMatrix = function (response, status) {
 
     time = response.rows[0].elements[minIndex].duration.value;
     $("#time").html("El tiempo estimado es de " + time);
-    $("#cancel-solicitude").removeAttribute("hidden");
+    $("#cancel-solicitude").removeAttr("hidden");
     calculateAndDisplayRoute({
         lat: dealer_lat,
         lng: dealer_log
